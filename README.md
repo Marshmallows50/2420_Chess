@@ -22,3 +22,5 @@
     </li>
     <li>Rook</li>
 </ul>
+
+<a href="https://lucid.app/lucidchart/8d007253-9e4e-4fce-937f-f7dc9522de22/edit?viewport_loc=-390%2C13%2C3114%2C1364%2C0_0&invitationId=inv_7478996f-21a6-46a9-bbcd-94528af1011d">UML DIAGRAM</a>
