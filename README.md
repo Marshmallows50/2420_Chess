@@ -1,8 +1,8 @@
 <h1>Structure:</h1>
 <h3>Gameboard</h3><p>Use BFS of get the shortest path of the user selected destination. Feed this information to pieces to decipher if the sequence of vertices are a valid movement.</p>
 <h3>Graveyard</h3><p>Interactivity between pieces, ie. removing a piece from the board.</p>
-<h3>Player</h3><p>In Player class we define input / controls. White moves first, black moves second.</p>
-<h3>Pieces</h3><p>Define valid movement patterns, particular rules, etc.</p>
+<h3>Chess.Player</h3><p>In Chess.Player class we define input / controls. White moves first, black moves second.</p>
+<h3>Chess.Piece</h3><p>Define valid movement patterns, particular rules, etc.</p>
 <ul>
     <li>Pawn
         <ul>
