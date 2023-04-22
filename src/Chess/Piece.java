@@ -8,7 +8,7 @@ public abstract class Piece {
     private Boolean color;
     private String rank;
     private ImageIcon icon;
-//    private Node cords; //TODO we need a node class
+    private Tile cords; //TODO we need a node class
 
     public Piece(boolean color, String rank, ImageIcon icon) {
         // children will call this super().

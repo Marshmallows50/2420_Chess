@@ -1,12 +1,12 @@
 package Chess;
 
-public class Node {
+public class Tile {
     private Boolean hasPiece;
     private Piece piece;
     private int row;
     private int column;
 
-    public Node() {
+    public Tile() {
 
     }
 
