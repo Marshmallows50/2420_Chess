@@ -3,7 +3,6 @@ package Chess;
 public class Tile implements Comparable<Tile> {
 
     private String name;
-    private Boolean hasPiece;
     private Piece piece;
     private String color;
     private int x;
@@ -20,10 +19,6 @@ public class Tile implements Comparable<Tile> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getY() {
         return y;
     }
@@ -32,12 +27,8 @@ public class Tile implements Comparable<Tile> {
         return x;
     }
 
-    public Boolean getHasPiece() {
-        return hasPiece;
-    }
-
-    public void setHasPiece(Boolean hasPiece) {
-        this.hasPiece = hasPiece;
+    public Boolean hasPiece() {
+        return piece != null;
     }
 
     public Piece getPiece() {
@@ -46,6 +37,7 @@ public class Tile implements Comparable<Tile> {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        piece.cords = this;
     }
 
     public Iterable<Piece> getAdjacentPieces() {
@@ -58,5 +50,9 @@ public class Tile implements Comparable<Tile> {
             return Integer.compare(this.x, other.x);
         else
             return Integer.compare(this.y, other.y);
+    }
+
+    public String getColor() {
+        return color;
     }
 }

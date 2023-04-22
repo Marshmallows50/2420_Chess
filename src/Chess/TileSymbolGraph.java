@@ -27,6 +27,7 @@ import edu.princeton.cs.algs4.*;
  *  @author Gabriel Perillo
  */
 public class TileSymbolGraph {
+    // TODO update doc comment
     public ST<Tile, Integer> st;  // tile -> index
     private Tile[] keys;           // index  -> tile
     private ST<String, Tile> nameST; // tile.name -> tile
@@ -148,6 +149,17 @@ public class TileSymbolGraph {
     public Tile tileOf(int v) {
         validateVertex(v);
         return keys[v];
+    }
+
+    /**
+     * Returns the Tile of the vertex associated with the integer {@code v}.
+     * @param  s the integer corresponding to a vertex (between 0 and <em>V</em> - 1)
+     * @throws IllegalArgumentException unless {@code 0 <= v < V}
+     * @return the Tile of the vertex associated with the integer {@code v}
+     */
+    public Tile tileOf(String s) {
+        //TODO update doc comment
+        return nameST.get(s);
     }
 
     /**
