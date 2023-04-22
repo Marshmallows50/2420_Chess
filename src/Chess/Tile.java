@@ -1,21 +1,35 @@
 package Chess;
 
-public class Tile {
+public class Tile implements Comparable<Tile> {
+
+    private String name;
     private Boolean hasPiece;
     private Piece piece;
-    private int row;
-    private int column;
+    private String color;
+    private int x;
+    private int y;
 
-    public Tile() {
-
+    public Tile(String name, int x, int y, String color) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.color = color;
     }
 
-    public int getColumn() {
-        return column;
+    public String getName() {
+        return name;
     }
 
-    public int getRow() {
-        return row;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
     }
 
     public Boolean getHasPiece() {
@@ -36,5 +50,13 @@ public class Tile {
 
     public Iterable<Piece> getAdjacentPieces() {
         return null; //TODO
+    }
+
+    @Override
+    public int compareTo(Tile other) {
+        if (this.x != other.x)
+            return Integer.compare(this.x, other.x);
+        else
+            return Integer.compare(this.y, other.y);
     }
 }
