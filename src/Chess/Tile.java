@@ -5,6 +5,8 @@ public class Tile implements Comparable<Tile> {
     private String name;
     private Piece piece;
     private String color;
+
+
     private int x;
     private int y;
 

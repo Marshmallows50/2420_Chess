@@ -8,7 +8,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class Board {
     public TileSymbolGraph grid;
     public Graph gridGraph;
-    private Tile selectedTile;
+    public Tile selectedTile;
 
 
     public Board() {

@@ -69,6 +69,9 @@ public class ChessApp extends JFrame {
                     ((boardPanel.getWidth()/8)-5,(boardPanel.getHeight())-5));
             button.addActionListener(new ActionListener() {
                 @Override
+                //TODO Change button color back to default when a new tile is selected
+                //TODO Don't select tiles without pieces on them.
+                //TODO Don't select a tile if player of opposite color to the piece on the tile clicks on it.
                 public void actionPerformed(ActionEvent actionEvent) {
                     board.select(t);
                     button.setBackground(Color.ORANGE);
