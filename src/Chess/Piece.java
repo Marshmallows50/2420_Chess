@@ -17,12 +17,8 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public Boolean getColor() {
+    public boolean getColor() {
         return color;
-    }
-
-    public String getRank() {
-        return rank;
     }
 
     public void kill() {
@@ -33,6 +29,5 @@ public abstract class Piece {
     public boolean validateMovement() {
         return false; //TODO
     }
-
 
 }
