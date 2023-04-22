@@ -1,5 +1,7 @@
 package Chess;
 
+import edu.princeton.cs.algs4.ST;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,8 @@ public class ChessApp extends JFrame {
     private JPanel contentPane;
     private JPanel boardPanel;
     private JMenuBar menuBar;
+
+    private ST<Tile, JButton> tButtonsST;
 
 
     public static void main(String[] args) {
@@ -28,13 +32,16 @@ public class ChessApp extends JFrame {
     }
 
     public ChessApp() {
+        // Init fields
         board = new Board();
+        tButtonsST = new ST<>();
 
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Chess");
         setIconImage(new ImageIcon("src/Chess/Resources/Pawn.png").getImage());
-        setBounds(100, 100, 800, 800);
+        setBounds(100, 100, 900, 900);
+        setResizable(false);
 
         //content pane
         contentPane = new JPanel();
@@ -53,31 +60,41 @@ public class ChessApp extends JFrame {
     }
 
     public JPanel createBoardPanel() {
-        //TODO fix image icon sizing issues. Look at https://stackoverflow.com/questions/2244848/java-imageicon-size
         JPanel boardPanel = new JPanel(new GridLayout(8, 8, 0, 0));
-        boardPanel.setMinimumSize(new Dimension(this.getWidth(), this.getHeight() - 50));
+        boardPanel.setSize(new Dimension(this.getWidth(), this.getHeight() - 50));
+
         Tile[] allTiles = board.grid.getKeys();
         for (Tile t:allTiles) {
             JButton button = new JButton();
+            button.setBorder(null);
+            button.setSize(new Dimension((boardPanel.getWidth()/8),(boardPanel.getHeight()/8)));
+
+            // TODO: Reduce number of ImageIcon objects, currently creating 1 for each JButton, need to minimize.
             if (t.hasPiece())
-                button.setIcon(t.getPiece().icon);
+                button.setIcon(new ImageIcon(t.getPiece().image.getScaledInstance
+                        (button.getWidth(), button.getHeight(), Image.SCALE_DEFAULT)));
             if (t.getColor().equals("B"))
                 button.setBackground(Color.BLACK);
+            else
+                button.setBackground(Color.WHITE);
 
-            button.setBorder(null);
-            button.setMinimumSize(new Dimension
-                    ((boardPanel.getWidth()/8)-5,(boardPanel.getHeight())-5));
             button.addActionListener(new ActionListener() {
                 @Override
-                //TODO Change button color back to default when a new tile is selected
                 //TODO Don't select tiles without pieces on them.
-                //TODO Don't select a tile if player of opposite color to the piece on the tile clicks on it.
+                //Don't select a tile if player of opposite color to the piece on the tile clicks on it.
                 public void actionPerformed(ActionEvent actionEvent) {
+                    if (board.selectedTile != null) {
+                        if (board.selectedTile.getColor().equals("B"))
+                            tButtonsST.get(board.selectedTile).setBackground(Color.BLACK);
+                        else
+                            tButtonsST.get(board.selectedTile).setBackground(Color.WHITE);
+                    }
                     board.select(t);
                     button.setBackground(Color.ORANGE);
                     //TODO Add other button functionality here
                 }
             });
+            tButtonsST.put(t, button);
             boardPanel.add(button);
         }
         return boardPanel;

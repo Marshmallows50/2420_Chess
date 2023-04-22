@@ -1,21 +1,20 @@
 package Chess;
 
-import javax.swing.*;
+import Chess.Pieces.Rank;
+
+import java.awt.*;
 
 public abstract class Piece {
 
     // Fields
-    private Boolean color;
-    private String rank; // Change to ENUM
-    public ImageIcon icon;
+    private boolean color;
+    public Rank rank;
+    public Image image;
     public Tile cords;
 
-    public Piece(boolean color, String rank, ImageIcon icon) {
+    public Piece(boolean color) {
         // children will call this super().
-        //TODO remove rank and imageIcon from parameters.
         this.color = color;
-        this.rank = rank;
-        this.icon = icon;
     }
 
     public Boolean getColor() {
