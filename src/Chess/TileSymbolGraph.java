@@ -28,9 +28,8 @@ import edu.princeton.cs.algs4.*;
  */
 public class TileSymbolGraph {
     public ST<Tile, Integer> st;  // tile -> index
-    public Tile[] keys;           // index  -> tile
-
-    public ST<String, Tile> nameST; // tile.name -> tile
+    private Tile[] keys;           // index  -> tile
+    private ST<String, Tile> nameST; // tile.name -> tile
     private Graph graph;             // the underlying graph
 
     /**
@@ -44,6 +43,7 @@ public class TileSymbolGraph {
      */
     public TileSymbolGraph(String filename, String delimiter) {
         st = new ST<Tile, Integer>();
+        nameST = new ST<String, Tile>();
 
         // First pass builds the index by reading strings to associate
         // distinct strings with a Tile. Also creates tile objects to associate
@@ -82,8 +82,12 @@ public class TileSymbolGraph {
             String[] o = a[a.length -1].split(" "); // get array of vertices from main array.
             int v = st.get(nameST.get(a[0])); // get name of first vertex on line. uses array "a"
             for (String s : o) {
-                int w = st.get(nameST.get(s));
-                graph.addEdge(v, w);
+                try {
+                    int w = st.get(nameST.get(s));
+                    graph.addEdge(v, w);
+                }
+                catch (IllegalArgumentException ignored){}
+
             }
         }
     }
@@ -153,6 +157,15 @@ public class TileSymbolGraph {
      */
     public Graph graph() {
         return graph;
+    }
+
+    /**
+     * Returns the Keys associated with the symbol graph. It is the client's responsibility
+     * not to mutate the Array.
+     * @return the Keys associated with the symbol graph
+     */
+    public Tile[] getKeys() {
+        return keys;
     }
 
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
