@@ -11,10 +11,12 @@ public abstract class Piece {
     public Rank rank;
     public Image image;
     public Tile cords;
+    public boolean hasMoved;
 
     public Piece(boolean color) {
         // children will call this super().
         this.color = color;
+        hasMoved = false;
     }
 
     public boolean getColor() {

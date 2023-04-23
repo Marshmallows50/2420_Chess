@@ -86,11 +86,13 @@ public class ChessApp extends JFrame {
                     if (!(game.isWhitesTurn == t.getPiece().getColor()))
                         return;
 
-                    if (game.board.selectedTile != null) {
-                        if (game.board.selectedTile.getColor().equals("B"))
-                            tButtonsST.get(game.board.selectedTile).setBackground(Color.BLACK);
-                        else
-                            tButtonsST.get(game.board.selectedTile).setBackground(Color.WHITE);
+                    Tile selectedTile = game.board.selectedTile;
+                    if (selectedTile != null) {
+                        if (selectedTile.getColor().equals("B")) {
+                            tButtonsST.get(selectedTile).setBackground(Color.BLACK);
+                        } else {
+                            tButtonsST.get(selectedTile).setBackground(Color.WHITE);
+                        }
                     }
                     game.board.select(t);
                     button.setBackground(Color.ORANGE);
