@@ -12,7 +12,10 @@ public class Knight extends Piece {
         super(color);
         rank = Rank.KNIGHT;
         try {
-            image = ImageIO.read(new File("src/Chess/Resources/Knight.png"));
+            if(color)
+                image = ImageIO.read(new File("src/Chess/Resources/WhiteKnight.png"));
+            else
+                image = ImageIO.read(new File("src/Chess/Resources/BlackKnight.png"));
         } catch (IOException ignored) {}
     }
 }

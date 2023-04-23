@@ -21,29 +21,29 @@ public class Board {
         Tile[] allTiles = grid.getKeys();
 
         //color true = white, false = black
-        allTiles[0].setPiece(new Rook(false));
-        allTiles[1].setPiece(new Knight(false));
-        allTiles[2].setPiece(new Bishop(false));
-        allTiles[3].setPiece(new Queen(false));
-        allTiles[4].setPiece(new King(false));
-        allTiles[5].setPiece(new Bishop(false));
-        allTiles[6].setPiece(new Knight(false));
-        allTiles[7].setPiece(new Rook(false));
+        allTiles[0].setPiece(new Rook(true));
+        allTiles[1].setPiece(new Knight(true));
+        allTiles[2].setPiece(new Bishop(true));
+        allTiles[3].setPiece(new Queen(true));
+        allTiles[4].setPiece(new King(true));
+        allTiles[5].setPiece(new Bishop(true));
+        allTiles[6].setPiece(new Knight(true));
+        allTiles[7].setPiece(new Rook(true));
 
         for (int i = 8; i < 16; i++)//TODO change so it's not magic number
-            allTiles[i].setPiece(new Pawn(false));
-
-        for (int i = 48; i < 56; i++)//TODO change so it's not magic number
             allTiles[i].setPiece(new Pawn(true));
 
-        allTiles[56].setPiece(new Rook(true));
-        allTiles[57].setPiece(new Knight(true));
-        allTiles[58].setPiece(new Bishop(true));
-        allTiles[59].setPiece(new Queen(true));
-        allTiles[60].setPiece(new King(true));
-        allTiles[61].setPiece(new Bishop(true));
-        allTiles[62].setPiece(new Knight(true));
-        allTiles[63].setPiece(new Rook(true));
+        for (int i = 48; i < 56; i++)//TODO change so it's not magic number
+            allTiles[i].setPiece(new Pawn(false));
+
+        allTiles[56].setPiece(new Rook(false));
+        allTiles[57].setPiece(new Knight(false));
+        allTiles[58].setPiece(new Bishop(false));
+        allTiles[59].setPiece(new Queen(false));
+        allTiles[60].setPiece(new King(false));
+        allTiles[61].setPiece(new Bishop(false));
+        allTiles[62].setPiece(new Knight(false));
+        allTiles[63].setPiece(new Rook(false));
     }
 
     public boolean hasPathTo(Tile piece, Tile destination) {

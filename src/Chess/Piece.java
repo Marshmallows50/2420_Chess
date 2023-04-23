@@ -4,7 +4,7 @@ import Chess.Pieces.Rank;
 
 import java.awt.*;
 
-public abstract class Piece {
+public class Piece {
 
     // Fields
     private boolean color;
@@ -17,6 +17,14 @@ public abstract class Piece {
         // children will call this super().
         this.color = color;
         hasMoved = false;
+    }
+
+    public Piece(Piece pieceToCopy) {
+        this.color = pieceToCopy.color;
+        this.rank = pieceToCopy.rank;
+        this.image = pieceToCopy.image;
+        this.cords = pieceToCopy.cords;
+        this.hasMoved = pieceToCopy.hasMoved;
     }
 
     public boolean getColor() {

@@ -62,8 +62,9 @@ public class ChessApp extends JFrame {
         boardPanel.setSize(new Dimension(this.getWidth(), this.getHeight() - 50));
 
         Tile[] allTiles = game.board.grid.getKeys();
-        for (Tile t:allTiles) {
-            JButton button = new JButton();
+        for (int i = allTiles.length - 1; i >= 0; i--) {
+            Tile t = allTiles[i];
+            JButton button = new JButton(t.getName());
             button.setBorder(null);
             button.setSize(new Dimension((boardPanel.getWidth()/8),(boardPanel.getHeight()/8)));
 
@@ -71,32 +72,31 @@ public class ChessApp extends JFrame {
             if (t.hasPiece())
                 button.setIcon(new ImageIcon(t.getPiece().image.getScaledInstance
                         (button.getWidth(), button.getHeight(), Image.SCALE_DEFAULT)));
-            if (t.getColor().equals("B"))
-                button.setBackground(Color.BLACK);
-            else
-                button.setBackground(Color.WHITE);
+            button.setBackground(t.getColor());
 
             button.addActionListener(new ActionListener() {
                 @Override
                 //TODO Don't select tiles without pieces on them.
                 //TODO Don't select a tile if player of opposite color to the piece on the tile clicks on it.
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if (!t.hasPiece())
-                        return;
-                    if (!(game.isWhitesTurn == t.getPiece().getColor()))
-                        return;
-
                     Tile selectedTile = game.board.selectedTile;
-                    if (selectedTile != null) {
-                        game.bfpsManager.piecePathTo(selectedTile, t);
-  /*                      if (selectedTile.getColor().equals("B")) {
-                            tButtonsST.get(selectedTile).setBackground(Color.BLACK);
-                        } else {
-                            tButtonsST.get(selectedTile).setBackground(Color.WHITE);
-                        }*/
+                    if (!t.hasPiece() && selectedTile == null)
+                        return;
+                    else if(selectedTile == null) {
+                        game.board.select(t);
+                        button.setBackground(Color.ORANGE);
+                        return;
+                    } else if(game.bfpsManager.pieceHasPathTo(selectedTile, t)) {
+                        System.out.println("moving piece");
+                        selectedTile.movePiece(t);
+                        tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
+                        tButtonsST.get(selectedTile).setIcon(null);
+                        tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
+                        game.board.selectedTile = null;
+                        return;
+                    } else {
+                        System.out.println("todo");
                     }
-                    game.board.select(t);
-                    button.setBackground(Color.ORANGE);
 
                     //TODO move the piece
                     //TODO flip the game.isWhitesTurn boolean

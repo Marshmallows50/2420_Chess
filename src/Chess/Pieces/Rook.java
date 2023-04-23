@@ -12,7 +12,10 @@ public class Rook extends Piece {
         super(color);
         rank = Rank.ROOK;
         try {
-            image = ImageIO.read(new File("src/Chess/Resources/Rook.png"));
+            if(color)
+                image = ImageIO.read(new File("src/Chess/Resources/WhiteRook.png"));
+            else
+                image = ImageIO.read(new File("src/Chess/Resources/BlackRook.png"));
         } catch (IOException ignored) {}
     }
 }

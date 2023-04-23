@@ -1,10 +1,12 @@
 package Chess;
 
+import java.awt.*;
+
 public class Tile implements Comparable<Tile> {
 
     private String name;
     private Piece piece;
-    private String color;
+    private Color color;
 
 
     private int x;
@@ -14,7 +16,10 @@ public class Tile implements Comparable<Tile> {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.color = color;
+        if(color.equals("B"))
+            this.color = Color.BLACK;
+        else
+            this.color = Color.WHITE;
     }
 
     public String getName() {
@@ -37,9 +42,15 @@ public class Tile implements Comparable<Tile> {
         return piece;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-        piece.cords = this;
+    public void setPiece(Piece oldPiece) {
+        Piece newPiece = new Piece(oldPiece);
+        this.piece = newPiece;
+        newPiece.cords = this;
+    }
+
+    public void movePiece(Tile newTile) {
+        newTile.setPiece(piece);
+        piece = null;
     }
 
     public Iterable<Piece> getAdjacentPieces() {
@@ -54,7 +65,12 @@ public class Tile implements Comparable<Tile> {
             return Integer.compare(this.y, other.y);
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

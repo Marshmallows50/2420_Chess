@@ -12,7 +12,10 @@ public class Queen extends Piece {
         super(color);
         rank = Rank.QUEEN;
         try {
-            image = ImageIO.read(new File("src/Chess/Resources/Queen.png"));
+            if(color)
+                image = ImageIO.read(new File("src/Chess/Resources/WhiteQueen.png"));
+            else
+                image = ImageIO.read(new File("src/Chess/Resources/BlackQueen.png"));
         } catch (IOException ignored) {}
     }
 }

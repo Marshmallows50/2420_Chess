@@ -12,7 +12,10 @@ public class Bishop extends Piece {
         super(color);
         rank = Rank.BISHOP;
         try {
-            image = ImageIO.read(new File("src/Chess/Resources/Bishop.png"));
+            if(color)
+                image = ImageIO.read(new File("src/Chess/Resources/WhiteBishop.png"));
+            else
+                image = ImageIO.read(new File("src/Chess/Resources/BlackBishop.png"));
         } catch (IOException ignored) {}
     }
 }

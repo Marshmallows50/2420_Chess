@@ -12,7 +12,10 @@ public class Pawn extends Piece {
         super(color);
         rank = Rank.PAWN;
         try {
-            image = ImageIO.read(new File("src/Chess/Resources/Pawn.png"));
+            if(color)
+                image = ImageIO.read(new File("src/Chess/Resources/WhitePawn.png"));
+            else
+                image = ImageIO.read(new File("src/Chess/Resources/BlackPawn.png"));
         } catch (IOException ignored) {}
     }
 }
