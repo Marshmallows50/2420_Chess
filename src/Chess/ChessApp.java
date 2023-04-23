@@ -90,18 +90,16 @@ public class ChessApp extends JFrame {
                         game.board.select(t);
                         button.setBackground(Color.ORANGE);
                         return;
-                    } else if(selectedTile.getPiece().getColor() == game.isWhitesTurn && game.bfpsManager.pieceHasPathTo(selectedTile, t)) {
+                    } else if((selectedTile.getPiece().getColor() == game.isWhitesTurn && game.bfpsManager.pieceHasPathTo(selectedTile, t)) ||
+                            (t.hasPiece() && t.getPiece().getColor() != game.isWhitesTurn)) {
                         System.out.println("moving piece");
                         selectedTile.movePiece(t);
-                        t.getPiece().hasMoved = true;
-                        tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
-                        tButtonsST.get(selectedTile).setIcon(null);
-                        tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
-                        game.board.selectedTile = null;
-                        if(game.isWhitesTurn)
-                            game.isWhitesTurn = false;
-                        else
-                            game.isWhitesTurn = true;
+                            t.getPiece().hasMoved = true;
+                            tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
+                            tButtonsST.get(selectedTile).setIcon(null);
+                            tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
+                            game.board.selectedTile = null;
+                        game.isWhitesTurn = !game.isWhitesTurn;
                         System.out.println(game.isWhitesTurn ? "It is white's turn." : "It is black's turn.");
                         return;
                     } else {

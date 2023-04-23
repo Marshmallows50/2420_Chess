@@ -21,6 +21,7 @@ public class TileBFPsManager {
 
         while (!path.isEmpty()) {
             Tile tile = tsg.tileOf(path.pop());
+            System.out.println("tile: " + tile);
             if(!tile.equals(source) || !tile.equals(dest)) {
                 if(tile.hasPiece() && (tile.getPiece().getColor() != source.getPiece().getColor()))
                     return false;
@@ -49,7 +50,6 @@ public class TileBFPsManager {
         Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
         // determine if dest is in a straight line
         if(tsg.tileOf(source).getName().substring(0,1).equals(tsg.tileOf(dest).getName().substring(0,1))) {
-            System.out.println(tsg.tileOf(source).getPiece().hasMoved);
             // Pawn has not moved and the distance to the destination tile is 2 or 1.
             if (!tsg.tileOf(source).getPiece().hasMoved && BFP.distTo(dest) <= 2)
                 return thing;
@@ -64,16 +64,31 @@ public class TileBFPsManager {
     }
 
     private Iterable<Integer> queenPathTo(int source, int dest) {
-        return null;
+        Stack<Integer> thing = (Stack<Integer>) rookPathTo(source, dest);
+        if(thing == null)
+            return bishopPathTo(source, dest);
+        else
+            return thing;
     }
 
     private Iterable<Integer> rookPathTo(int source, int dest) {
+        BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
+        // first vertex accessed is the source, last vertex is the destination.
+        Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
+        // determine if dest is in a straight line
+        if(tsg.tileOf(source).getName().substring(0,1).equals(tsg.tileOf(dest).getName().substring(0,1)))
+            return thing;
+        else if(tsg.tileOf(source).getName().substring(1).equals(tsg.tileOf(dest).getName().substring(1)))
+            return thing;
+
         return null;
     }
 
     private Iterable<Integer> bishopPathTo(int source, int dest) {
         BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
-
+        Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
+        if(tsg.tileOf(source).getColor().equals(tsg.tileOf(dest).getColor()))
+            return thing;
         return null;
     }
 
