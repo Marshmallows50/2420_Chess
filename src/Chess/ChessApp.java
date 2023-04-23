@@ -82,24 +82,26 @@ public class ChessApp extends JFrame {
                     Tile selectedTile = game.board.selectedTile;
                     if (!t.hasPiece() && selectedTile == null)
                         return;
-                    else if(selectedTile == null) {
+                    else if(selectedTile == null && t.getPiece().getColor() == game.isWhitesTurn) {
                         game.board.select(t);
                         button.setBackground(Color.ORANGE);
                         return;
-                    } else if(game.bfpsManager.pieceHasPathTo(selectedTile, t)) {
+                    } else if(selectedTile.getPiece().getColor() == game.isWhitesTurn && game.bfpsManager.pieceHasPathTo(selectedTile, t)) {
                         System.out.println("moving piece");
                         selectedTile.movePiece(t);
                         tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
                         tButtonsST.get(selectedTile).setIcon(null);
                         tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
                         game.board.selectedTile = null;
+                        if(game.isWhitesTurn)
+                            game.isWhitesTurn = false;
+                        else
+                            game.isWhitesTurn = true;
                         return;
                     } else {
                         System.out.println("todo");
                     }
 
-                    //TODO move the piece
-                    //TODO flip the game.isWhitesTurn boolean
                     //TODO Add other button functionality here
                 }
             });

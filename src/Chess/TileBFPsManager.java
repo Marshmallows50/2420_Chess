@@ -15,8 +15,20 @@ public class TileBFPsManager {
     }
 
     public boolean pieceHasPathTo(Tile source, Tile dest) {
-        Iterable<Integer> i = piecePathTo(source, dest);
-        return i != null;
+        Stack<Integer> path = (Stack<Integer>) piecePathTo(source, dest);
+        for (int v : path) {
+            if(tsg.tileOf(v).hasPiece() && !tsg.tileOf(v).equals(source)) {
+                // check the color
+            }
+        }
+        while (!path.isEmpty()) {
+            Tile tile = tsg.tileOf(path.pop());
+            if(!tile.equals(source) || !tile.equals(dest)) {
+                if(tile.hasPiece() && (tile.getPiece().getColor() != source.getPiece().getColor()))
+                    return false;
+            }
+        }
+        return true;
     }
 
     public Iterable<Integer> piecePathTo(Tile source, Tile dest) {
@@ -37,10 +49,17 @@ public class TileBFPsManager {
         BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
         // first vertex accessed is the source, last vertex is the destination.
         Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
-        if(tsg.tileOf(dest).hasPiece() == false)
-            if((!tsg.tileOf(source).getPiece().hasMoved && BFP.distTo(dest) <= 2) || BFP.distTo(dest) == 1)
-                return thing;
-        return null;
+        if(tsg.tileOf(dest).hasPiece()) {
+            // capture
+        } else if(!tsg.tileOf(dest).hasPiece()) {
+            if ((tsg.tileOf(source).getPiece().hasMoved && BFP.distTo(dest) > 2) || BFP.distTo(dest) > 2)
+                return null;
+        } else {
+
+
+        }
+
+        return thing;
     }
 
     private Iterable<Integer> kingPathTo(int source, int dest) {
