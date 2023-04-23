@@ -12,4 +12,11 @@ public class Game {
         white = new Player(true);
         black = new Player(false);
     }
+
+    public void checkCheck() {
+        //TODO implement
+    }
+
+
+
 }

@@ -21,14 +21,14 @@ public class Board {
         Tile[] allTiles = grid.getKeys();
 
         //color true = white, false = black
-        allTiles[0].setPiece(new Rook(true));
-        allTiles[1].setPiece(new Knight(true));
-        allTiles[2].setPiece(new Bishop(true));
-        allTiles[3].setPiece(new Queen(true));
-        allTiles[4].setPiece(new King(true));
-        allTiles[5].setPiece(new Bishop(true));
-        allTiles[6].setPiece(new Knight(true));
-        allTiles[7].setPiece(new Rook(true));
+        allTiles[0].setPiece(new Rook(false));
+        allTiles[1].setPiece(new Knight(false));
+        allTiles[2].setPiece(new Bishop(false));
+        allTiles[3].setPiece(new Queen(false));
+        allTiles[4].setPiece(new King(false));
+        allTiles[5].setPiece(new Bishop(false));
+        allTiles[6].setPiece(new Knight(false));
+        allTiles[7].setPiece(new Rook(false));
 
         for (int i = 8; i < 16; i++)//TODO change so it's not magic number
             allTiles[i].setPiece(new Pawn(true));

@@ -1,5 +1,6 @@
 package Chess;
 
+import edu.princeton.cs.algs4.BreadthFirstPaths;
 import edu.princeton.cs.algs4.ST;
 
 import javax.swing.*;
@@ -93,6 +94,9 @@ public class ChessApp extends JFrame {
                     }
                     game.board.select(t);
                     button.setBackground(Color.ORANGE);
+
+                    //TODO move the piece
+                    //TODO flip the game.isWhitesTurn boolean
                     //TODO Add other button functionality here
                 }
             });
