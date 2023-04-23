@@ -45,7 +45,6 @@ public class Tile implements Comparable<Tile> {
     public void setPiece(Piece oldPiece) {
         Piece newPiece = new Piece(oldPiece);
         this.piece = newPiece;
-        piece.hasMoved = true;
         piece.cords = this;
     }
 

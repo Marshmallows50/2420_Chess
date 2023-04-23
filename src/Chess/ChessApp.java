@@ -76,10 +76,14 @@ public class ChessApp extends JFrame {
 
             button.addActionListener(new ActionListener() {
                 @Override
-                //TODO Don't select tiles without pieces on them.
-                //TODO Don't select a tile if player of opposite color to the piece on the tile clicks on it.
                 public void actionPerformed(ActionEvent actionEvent) {
                     Tile selectedTile = game.board.selectedTile;
+                    if(t.equals(selectedTile)) {
+                        tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
+                        game.board.selectedTile = null;
+                        return;
+                    }
+
                     if (!t.hasPiece() && selectedTile == null)
                         return;
                     else if(selectedTile == null && t.getPiece().getColor() == game.isWhitesTurn) {
@@ -89,6 +93,7 @@ public class ChessApp extends JFrame {
                     } else if(selectedTile.getPiece().getColor() == game.isWhitesTurn && game.bfpsManager.pieceHasPathTo(selectedTile, t)) {
                         System.out.println("moving piece");
                         selectedTile.movePiece(t);
+                        t.getPiece().hasMoved = true;
                         tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
                         tButtonsST.get(selectedTile).setIcon(null);
                         tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
@@ -97,6 +102,7 @@ public class ChessApp extends JFrame {
                             game.isWhitesTurn = false;
                         else
                             game.isWhitesTurn = true;
+                        System.out.println(game.isWhitesTurn ? "It is white's turn." : "It is black's turn.");
                         return;
                     } else {
                         System.out.println("todo");

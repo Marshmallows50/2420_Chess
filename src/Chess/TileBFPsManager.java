@@ -16,11 +16,9 @@ public class TileBFPsManager {
 
     public boolean pieceHasPathTo(Tile source, Tile dest) {
         Stack<Integer> path = (Stack<Integer>) piecePathTo(source, dest);
-        for (int v : path) {
-            if(tsg.tileOf(v).hasPiece() && !tsg.tileOf(v).equals(source)) {
-                // check the color
-            }
-        }
+        if(path == null)
+            return false;
+
         while (!path.isEmpty()) {
             Tile tile = tsg.tileOf(path.pop());
             if(!tile.equals(source) || !tile.equals(dest)) {
@@ -49,17 +47,16 @@ public class TileBFPsManager {
         BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
         // first vertex accessed is the source, last vertex is the destination.
         Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
-        if(tsg.tileOf(dest).hasPiece()) {
-            // capture
-        } else if(!tsg.tileOf(dest).hasPiece()) {
-            if ((tsg.tileOf(source).getPiece().hasMoved && BFP.distTo(dest) > 2) || BFP.distTo(dest) > 2)
-                return null;
-        } else {
-
-
+        // determine if dest is in a straight line
+        if(tsg.tileOf(source).getName().substring(0,1).equals(tsg.tileOf(dest).getName().substring(0,1))) {
+            System.out.println(tsg.tileOf(source).getPiece().hasMoved);
+            // Pawn has not moved and the distance to the destination tile is 2 or 1.
+            if (!tsg.tileOf(source).getPiece().hasMoved && BFP.distTo(dest) <= 2)
+                return thing;
+            else if (BFP.distTo(dest) == 1)
+                return thing;
         }
-
-        return thing;
+        return null;
     }
 
     private Iterable<Integer> kingPathTo(int source, int dest) {
