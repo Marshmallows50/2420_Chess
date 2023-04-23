@@ -9,14 +9,11 @@ import java.awt.event.ActionListener;
 
 public class ChessApp extends JFrame {
 
-
-    public Board board;
+    public Game game;
     private JPanel contentPane;
     private JPanel boardPanel;
     private JMenuBar menuBar;
-
     private ST<Tile, JButton> tButtonsST;
-
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -33,7 +30,8 @@ public class ChessApp extends JFrame {
 
     public ChessApp() {
         // Init fields
-        board = new Board();
+        game = new Game();
+
         tButtonsST = new ST<>();
 
         //frame
@@ -48,7 +46,6 @@ public class ChessApp extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
 
         //panels and containers
-//        boardPanel = new JPanel(new GridLayout(8, 8, 0, 0));
         boardPanel = createBoardPanel();
 //        menuBar = new JMenuBar();
 
@@ -63,7 +60,7 @@ public class ChessApp extends JFrame {
         JPanel boardPanel = new JPanel(new GridLayout(8, 8, 0, 0));
         boardPanel.setSize(new Dimension(this.getWidth(), this.getHeight() - 50));
 
-        Tile[] allTiles = board.grid.getKeys();
+        Tile[] allTiles = game.board.grid.getKeys();
         for (Tile t:allTiles) {
             JButton button = new JButton();
             button.setBorder(null);
@@ -81,15 +78,20 @@ public class ChessApp extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 //TODO Don't select tiles without pieces on them.
-                //Don't select a tile if player of opposite color to the piece on the tile clicks on it.
+                //TODO Don't select a tile if player of opposite color to the piece on the tile clicks on it.
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if (board.selectedTile != null) {
-                        if (board.selectedTile.getColor().equals("B"))
-                            tButtonsST.get(board.selectedTile).setBackground(Color.BLACK);
+                    if (!t.hasPiece())
+                        return;
+                    if (!(game.isWhitesTurn == t.getPiece().getColor()))
+                        return;
+
+                    if (game.board.selectedTile != null) {
+                        if (game.board.selectedTile.getColor().equals("B"))
+                            tButtonsST.get(game.board.selectedTile).setBackground(Color.BLACK);
                         else
-                            tButtonsST.get(board.selectedTile).setBackground(Color.WHITE);
+                            tButtonsST.get(game.board.selectedTile).setBackground(Color.WHITE);
                     }
-                    board.select(t);
+                    game.board.select(t);
                     button.setBackground(Color.ORANGE);
                     //TODO Add other button functionality here
                 }

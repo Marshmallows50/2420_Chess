@@ -11,8 +11,7 @@ public class Board {
 
     public Board() {
         // create Players
-        Player white = new Player(true);
-        Player black = new Player(false);
+
 
         // create Graph
         grid = new TileSymbolGraph("src/Chess/Resources/tileConnections.txt", ",");
@@ -28,7 +27,7 @@ public class Board {
         allTiles[3].setPiece(new Queen(true));
         allTiles[4].setPiece(new King(true));
         allTiles[5].setPiece(new Bishop(true));
-        allTiles[6].setPiece(new Bishop(true));
+        allTiles[6].setPiece(new Knight(true));
         allTiles[7].setPiece(new Rook(true));
 
         for (int i = 8; i < 16; i++)//TODO change so it's not magic number
@@ -43,7 +42,7 @@ public class Board {
         allTiles[59].setPiece(new Queen(false));
         allTiles[60].setPiece(new King(false));
         allTiles[61].setPiece(new Bishop(false));
-        allTiles[62].setPiece(new Bishop(false));
+        allTiles[62].setPiece(new Knight(false));
         allTiles[63].setPiece(new Rook(false));
     }
 
