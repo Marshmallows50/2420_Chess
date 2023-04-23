@@ -31,19 +31,19 @@ public class Board {
         allTiles[7].setPiece(new Rook(false));
 
         for (int i = 8; i < 16; i++)//TODO change so it's not magic number
-            allTiles[i].setPiece(new Pawn(true));
-
-        for (int i = 48; i < 56; i++)//TODO change so it's not magic number
             allTiles[i].setPiece(new Pawn(false));
 
-        allTiles[56].setPiece(new Rook(false));
-        allTiles[57].setPiece(new Knight(false));
-        allTiles[58].setPiece(new Bishop(false));
-        allTiles[59].setPiece(new Queen(false));
-        allTiles[60].setPiece(new King(false));
-        allTiles[61].setPiece(new Bishop(false));
-        allTiles[62].setPiece(new Knight(false));
-        allTiles[63].setPiece(new Rook(false));
+        for (int i = 48; i < 56; i++)//TODO change so it's not magic number
+            allTiles[i].setPiece(new Pawn(true));
+
+        allTiles[56].setPiece(new Rook(true));
+        allTiles[57].setPiece(new Knight(true));
+        allTiles[58].setPiece(new Bishop(true));
+        allTiles[59].setPiece(new Queen(true));
+        allTiles[60].setPiece(new King(true));
+        allTiles[61].setPiece(new Bishop(true));
+        allTiles[62].setPiece(new Knight(true));
+        allTiles[63].setPiece(new Rook(true));
     }
 
     public boolean hasPathTo(Tile piece, Tile destination) {
