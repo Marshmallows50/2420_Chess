@@ -6,11 +6,13 @@ public class Game {
     public Player black;
 
     public boolean isWhitesTurn = true;
+    public TileBFPsManager bfpsManager;
 
     public Game() {
         board = new Board();
         white = new Player(true);
         black = new Player(false);
+        bfpsManager = new TileBFPsManager(board.grid);
     }
 
     public void checkCheck() {

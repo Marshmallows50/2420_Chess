@@ -1,6 +1,7 @@
 package Chess;
 
 import edu.princeton.cs.algs4.BreadthFirstPaths;
+import edu.princeton.cs.algs4.Stack;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class TileBFPsManager {
 
     private Iterable<Integer> pawnPathTo(int source, int dest) {
         BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
-        ArrayList<Integer> thing = (ArrayList<Integer>) BFP.pathTo(dest);
+        Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
         //TODO loop through thing and determine if a pawn can actually get there
         // considering the pawns movement length, patterns, and obstacles.
         Tile[] allTiles = tsg.getKeys();
