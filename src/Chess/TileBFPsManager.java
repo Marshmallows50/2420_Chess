@@ -21,10 +21,13 @@ public class TileBFPsManager {
 
         while (!path.isEmpty()) {
             Tile tile = tsg.tileOf(path.pop());
-            System.out.println("tile: " + tile);
-            if(!tile.equals(source) || !tile.equals(dest)) {
-                if(tile.hasPiece() && (tile.getPiece().getColor() != source.getPiece().getColor()))
+//            System.out.println("tile: " + tile);
+            if(!tile.getName().equals(source.getName()) && !tile.getName().equals(dest.getName())) {
+                if(tile.hasPiece())
                     return false;
+            else if (tile.hasPiece() && (tile.getPiece().getColor() != source.getPiece().getColor())) {
+                return false;
+                }
             }
         }
         return true;
@@ -40,6 +43,7 @@ public class TileBFPsManager {
             case KING -> tiles = kingPathTo(s,v);
             case ROOK -> tiles = rookPathTo(s,v);
             case BISHOP -> tiles = bishopPathTo(s,v);
+            case KNIGHT -> tiles = knightPathTo(s,v);
         }
         return tiles;
     }
@@ -89,6 +93,10 @@ public class TileBFPsManager {
         Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
         if(tsg.tileOf(source).getColor().equals(tsg.tileOf(dest).getColor()))
             return thing;
+        return null;
+    }
+
+    private Iterable<Integer> knightPathTo(int source, int dest) {
         return null;
     }
 

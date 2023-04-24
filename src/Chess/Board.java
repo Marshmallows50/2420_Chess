@@ -6,13 +6,9 @@ import edu.princeton.cs.algs4.Graph;
 public class Board {
     public TileSymbolGraph grid;
     public Graph gridGraph;
-    public Tile selectedTile;
-
+    public Tile selectedPieceTile = null;
 
     public Board() {
-        // create Players
-
-
         // create Graph
         grid = new TileSymbolGraph("src/Chess/Resources/tileConnections.txt", ",");
         gridGraph = grid.graph();
@@ -48,13 +44,5 @@ public class Board {
 
     public boolean hasPathTo(Tile piece, Tile destination) {
         return false; // TODO: Need to implement.
-    }
-
-    public void select(Tile selectedTile) {
-        this.selectedTile = selectedTile;
-    }
-
-    public static void main(String[] args) {
-        Board board = new Board();
     }
 }

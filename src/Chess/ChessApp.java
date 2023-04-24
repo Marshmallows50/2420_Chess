@@ -1,6 +1,5 @@
 package Chess;
 
-import edu.princeton.cs.algs4.BreadthFirstPaths;
 import edu.princeton.cs.algs4.ST;
 
 import javax.swing.*;
@@ -58,17 +57,18 @@ public class ChessApp extends JFrame {
     }
 
     public JPanel createBoardPanel() {
+        // create Panel
         JPanel boardPanel = new JPanel(new GridLayout(8, 8, 0, 0));
         boardPanel.setSize(new Dimension(this.getWidth(), this.getHeight() - 50));
 
+        // create and decorate buttons
         Tile[] allTiles = game.board.grid.getKeys();
         for (int i = allTiles.length - 1; i >= 0; i--) {
             Tile t = allTiles[i];
-            JButton button = new JButton(t.getName());
+            JButton button = new JButton();
             button.setBorder(null);
             button.setSize(new Dimension((boardPanel.getWidth()/8),(boardPanel.getHeight()/8)));
 
-            // TODO: Reduce number of ImageIcon objects, currently creating 1 for each JButton, need to minimize.
             if (t.hasPiece())
                 button.setIcon(new ImageIcon(t.getPiece().image.getScaledInstance
                         (button.getWidth(), button.getHeight(), Image.SCALE_DEFAULT)));
@@ -77,41 +77,50 @@ public class ChessApp extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    Tile selectedTile = game.board.selectedTile;
-                    if(t.equals(selectedTile)) {
-                        tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
-                        game.board.selectedTile = null;
+                    Tile selected = game.board.selectedPieceTile;
+                    System.out.println(game.isWhitesTurn ? "It is white's turn." : "It is black's turn.");
+
+                    // if player clicks on a tile without a piece before clicking
+                    // on a tile with a piece, do nothing.
+                    if (!t.hasPiece() && selected == null) {
+                        System.out.println("select a tile with a piece first");
+                        return;
+                    }
+                    // if player clicks on a tile with a piece of their color, select it.
+                    else if (t.hasPiece() && game.isWhitesTurn == t.getPiece().getColor()) {
+                        selectTile(t);
                         return;
                     }
 
-                    if (!t.hasPiece() && selectedTile == null)
-                        return;
-                    else if(selectedTile == null && t.getPiece().getColor() == game.isWhitesTurn) {
-                        game.board.select(t);
-                        button.setBackground(Color.ORANGE);
-                        return;
-                    } else if((selectedTile.getPiece().getColor() == game.isWhitesTurn && game.bfpsManager.pieceHasPathTo(selectedTile, t)) ||
-                            (t.hasPiece() && t.getPiece().getColor() != game.isWhitesTurn)) {
+                    // At this point, A piece and a destination have been selected.
+                    if (game.isValidMovement(selected, t)) {
                         System.out.println("moving piece");
-                        selectedTile.movePiece(t);
-                            t.getPiece().hasMoved = true;
-                            tButtonsST.get(t).setIcon(tButtonsST.get(selectedTile).getIcon());
-                            tButtonsST.get(selectedTile).setIcon(null);
-                            tButtonsST.get(selectedTile).setBackground(selectedTile.getColor());
-                            game.board.selectedTile = null;
-                        game.isWhitesTurn = !game.isWhitesTurn;
-                        System.out.println(game.isWhitesTurn ? "It is white's turn." : "It is black's turn.");
-                        return;
-                    } else {
-                        System.out.println("todo");
-                    }
+                        if (t.hasPiece())
+                            game.kill(t.getPiece());
 
-                    //TODO Add other button functionality here
+                        // moves piece to destination tile
+                        selected.movePieceTo(t);
+                        //update destination tile to reflect new piece
+                        tButtonsST.get(t).setIcon(tButtonsST.get(selected).getIcon());
+                        tButtonsST.get(selected).setIcon(null);
+                        tButtonsST.get(selected).setBackground(selected.getColor());
+                        //set selected piece back to null
+                        game.board.selectedPieceTile = null;
+                        game.isWhitesTurn = !game.isWhitesTurn;
+                    }
                 }
             });
             tButtonsST.put(t, button);
             boardPanel.add(button);
         }
         return boardPanel;
+    }
+
+    public void selectTile(Tile t) {
+        if (game.board.selectedPieceTile != null)
+            tButtonsST.get(game.board.selectedPieceTile).setBackground(game.board.selectedPieceTile.getColor());
+        game.board.selectedPieceTile = t;
+        tButtonsST.get(game.board.selectedPieceTile).setBackground(Color.ORANGE);
+        System.out.println("Player has selected a tile with a piece of their own color");
     }
 }

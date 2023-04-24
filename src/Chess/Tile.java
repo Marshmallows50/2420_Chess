@@ -16,6 +16,7 @@ public class Tile implements Comparable<Tile> {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.piece = null;
         if(color.equals("B"))
             this.color = Color.BLACK;
         else
@@ -42,13 +43,18 @@ public class Tile implements Comparable<Tile> {
         return piece;
     }
 
-    public void setPiece(Piece oldPiece) {
-        Piece newPiece = new Piece(oldPiece);
-        this.piece = newPiece;
+    public void setPiece(Piece Piece) {
+//        Piece newPiece = new Piece(oldPiece);
+        this.piece = Piece;
         piece.cords = this;
     }
 
-    public void movePiece(Tile newTile) {
+    public Color getColor() {
+        return color;
+    }
+
+    public void movePieceTo(Tile newTile) {
+        piece.hasMoved = true;
         newTile.setPiece(piece);
         piece = null;
     }
@@ -63,10 +69,6 @@ public class Tile implements Comparable<Tile> {
             return Integer.compare(this.x, other.x);
         else
             return Integer.compare(this.y, other.y);
-    }
-
-    public Color getColor() {
-        return color;
     }
 
     @Override
