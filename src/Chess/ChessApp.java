@@ -31,13 +31,12 @@ public class ChessApp extends JFrame {
     public ChessApp() {
         // Init fields
         game = new Game();
-
         tButtonsST = new ST<>();
 
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Chess");
-        setIconImage(new ImageIcon("src/Chess/Resources/Pawn.png").getImage());
+        setIconImage(new ImageIcon("Chess/Resources/WhitePawn.png").getImage());
         setBounds(100, 100, 900, 900);
         setResizable(false);
 
@@ -58,13 +57,14 @@ public class ChessApp extends JFrame {
 
     public JPanel createBoardPanel() {
         // create Panel
-        JPanel boardPanel = new JPanel(new GridLayout(8, 8, 0, 0));
+        JPanel boardPanel = new JPanel(new GridLayout(8,8));
         boardPanel.setSize(new Dimension(this.getWidth(), this.getHeight() - 50));
 
         // create and decorate buttons
-        Tile[] allTiles = game.board.grid.getKeys();
-        for (int i = allTiles.length - 1; i >= 0; i--) {
-            Tile t = allTiles[i];
+        for (int i = 7, j =0; i >= 0 ; j++) { // loop through grid2d in reverse order to place A1 at bottom
+            Tile t = game.board.grid2d[i][j];
+            System.out.println(t.getName());
+
             JButton button = new JButton();
             button.setBorder(null);
             button.setSize(new Dimension((boardPanel.getWidth()/8),(boardPanel.getHeight()/8)));
@@ -110,8 +110,13 @@ public class ChessApp extends JFrame {
                     }
                 }
             });
+
             tButtonsST.put(t, button);
             boardPanel.add(button);
+
+            if (j==7){
+                i--;
+                j=-1;}
         }
         return boardPanel;
     }

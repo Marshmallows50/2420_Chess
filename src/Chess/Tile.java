@@ -8,7 +8,6 @@ public class Tile implements Comparable<Tile> {
     private Piece piece;
     private Color color;
 
-
     private int x;
     private int y;
 
@@ -44,7 +43,6 @@ public class Tile implements Comparable<Tile> {
     }
 
     public void setPiece(Piece Piece) {
-//        Piece newPiece = new Piece(oldPiece);
         this.piece = Piece;
         piece.cords = this;
     }
@@ -65,10 +63,9 @@ public class Tile implements Comparable<Tile> {
 
     @Override
     public int compareTo(Tile other) {
-        if (this.x != other.x)
-            return Integer.compare(this.x, other.x);
-        else
+        if (this.y != other.y)
             return Integer.compare(this.y, other.y);
+        else return Integer.compare(this.x, other.x);
     }
 
     @Override

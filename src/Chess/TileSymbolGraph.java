@@ -74,6 +74,7 @@ public class TileSymbolGraph {
             keys[st.get(tile)] = tile;
         }
 
+
         // second pass builds the graph by connecting first vertex on each
         // line to all others
         graph = new Graph(st.size());

@@ -2,20 +2,34 @@ package Chess;
 
 import Chess.Pieces.*;
 import edu.princeton.cs.algs4.Graph;
+import edu.princeton.cs.algs4.Quick;
+import edu.princeton.cs.algs4.Stack;
+
+import java.util.ArrayList;
 
 public class Board {
     public TileSymbolGraph grid;
     public Graph gridGraph;
     public Tile selectedPieceTile = null;
+    public Tile[][] grid2d;
 
     public Board() {
         // create Graph
         grid = new TileSymbolGraph("src/Chess/Resources/tileConnections.txt", ",");
         gridGraph = grid.graph();
+        grid2d = new Tile[8][8];
+
+        //Add Tiles to 2d grid
+        Tile[] allTiles = grid.getKeys();
+        for (int i = 0, j= 0, k=0;k < 64; j++, k++) {
+            grid2d[i][j] = allTiles[k];
+            if (j == 7) {
+                i++;
+                j = -1;
+            }
+        }
 
         //Add Pieces to Graph
-        Tile[] allTiles = grid.getKeys();
-
         //color true = white, false = black
         allTiles[0].setPiece(new Rook(true));
         allTiles[1].setPiece(new Knight(true));
