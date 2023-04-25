@@ -36,7 +36,7 @@ public class ChessApp extends JFrame {
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Chess");
-        setIconImage(new ImageIcon("Chess/Resources/WhitePawn.png").getImage());
+        setIconImage(new ImageIcon("src/Chess/Resources/wPawn.png").getImage());
         setBounds(100, 100, 900, 900);
         setResizable(false);
 
