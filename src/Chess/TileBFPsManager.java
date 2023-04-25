@@ -102,6 +102,18 @@ public class TileBFPsManager {
 //    }
 
     private boolean knightPathTo(int source, int dest) {
+        int diff = dest - source;
+        // top rights, = +16+1, +8+2
+        // top lefts = +16-1, +8-2
+        //bottom rights, = -16+1, -8+2
+        //bottom lefts = -16-1, -8-2
+        switch (diff) {
+            case 17, 10, 15, 6, -15, -6, -17, -10-> {
+                if (grid[source + diff].hasPiece())
+                    return grid[source].getPiece().getColor() != grid[source + diff].getPiece().getColor();
+                else return true;
+            }
+        }
         return false;
     }
 }
