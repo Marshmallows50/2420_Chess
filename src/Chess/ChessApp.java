@@ -44,6 +44,7 @@ public class ChessApp extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(0, 0));
 
+
         //panels and containers
         boardPanel = createBoardPanel();
 //        menuBar = new JMenuBar();
@@ -63,7 +64,6 @@ public class ChessApp extends JFrame {
         // create and decorate buttons
         for (int i = 7, j =0; i >= 0 ; j++) { // loop through grid2d in reverse order to place A1 at bottom
             Tile t = game.board.grid2d[i][j];
-            System.out.println(t.getName());
 
             JButton button = new JButton();
             button.setBorder(null);

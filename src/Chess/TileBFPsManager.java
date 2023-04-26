@@ -51,18 +51,29 @@ public class TileBFPsManager {
     private boolean pawnPathTo(int source, int dest) {
         // 1d array math method
         int diff = dest - source;
-        switch (diff) {
-            case 8, -8 -> {
-                return !grid[source + diff].hasPiece();
+        if (grid[source].getPiece().getColor())
+            switch (diff) {
+                case 8 -> {
+                    return !grid[source + diff].hasPiece();
+                }
+                case 7, 9 -> {
+                    return grid[source + diff].hasPiece() && !grid[source + diff].getPiece().getColor();
+                }
+                case 16 -> {
+                    return !grid[source + diff].hasPiece() && !tsg.tileOf(source).getPiece().hasMoved;
+                }
             }
-            case 7, 9 -> {
-                return grid[source + diff].hasPiece() && !grid[source + diff].getPiece().getColor();
-            }
-            case -7, -9 -> {
-                return grid[source + diff].hasPiece() && grid[source + diff].getPiece().getColor();
-            }
-            case 16, -16 -> {
-                return !grid[source + diff].hasPiece() && !tsg.tileOf(source).getPiece().hasMoved;
+        else {
+            switch (diff) {
+                case -8 -> {
+                    return !grid[source + diff].hasPiece();
+                }
+                case -7, -9 -> {
+                    return grid[source + diff].hasPiece() && grid[source + diff].getPiece().getColor();
+                }
+                case -16 -> {
+                    return !grid[source + diff].hasPiece() && !tsg.tileOf(source).getPiece().hasMoved;
+                }
             }
         }
         return false;
@@ -102,13 +113,14 @@ public class TileBFPsManager {
 //    }
 
     private boolean knightPathTo(int source, int dest) {
+        // 1d array math method
         int diff = dest - source;
         // top rights, = +16+1, +8+2
         // top lefts = +16-1, +8-2
         //bottom rights, = -16+1, -8+2
         //bottom lefts = -16-1, -8-2
         switch (diff) {
-            case 17, 10, 15, 6, -15, -6, -17, -10-> {
+            case 17, 10, 15, 6, -15, -6, -17, -10 -> {
                 if (grid[source + diff].hasPiece())
                     return grid[source].getPiece().getColor() != grid[source + diff].getPiece().getColor();
                 else return true;
