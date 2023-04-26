@@ -80,7 +80,18 @@ public class TileBFPsManager {
     }
 
     private boolean kingPathTo(int source, int dest) {
-        return false; // TODO: NO
+        int diff = 0;
+        if(source > dest) diff = source - dest;
+        else diff = dest - source;
+
+        switch(Math.abs(diff)) {
+            case 7, 8, 9, 1 -> {
+                if(grid[dest].hasPiece()) {
+                    return grid[source].getPiece().getColor() != grid[dest].getPiece().getColor();
+                } else return true;
+            }
+        }
+        return false;
     }
 
     private boolean queenPathTo(int source, int dest) {
@@ -131,16 +142,49 @@ public class TileBFPsManager {
     }
 
     private boolean bishopPathTo(int source, int dest) {
-        int diff = dest - source;
-        // diagonal top right = 7 * rows
-        // diagonal top left = 9 * rows
-        // diagonal bottom right = -7 * rows
-        // diagonal bottom left = -9 * rows
-        switch (diff) {
-            case 7, 9, 14, 18, 21, 27, 28, 36, 35, 45, 42, 54, 49, -7, -9, -14, -18, -21, -27, -28, -36, -35, -45, -42, -54, -49 -> {
-                if (grid[source + diff].hasPiece())
-                    return grid[source].getPiece().getColor() != grid[source + diff].getPiece().getColor();
-                else return true;
+        int diff = 0;
+        if(source > dest) diff = source - dest;
+        else diff = dest - source;
+        System.out.println("diff: " + diff);
+        // diagonal top right = 9 * rows
+        // diagonal top left = 7 * rows
+        // diagonal bottom right = -9 * rows
+        // diagonal bottom left = -7 * rows
+        switch (Math.abs(diff)) {
+            case 7, 14, 21, 28, 25, 42, 49 -> {
+                for(int i = 1; i <= diff / 7; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - (i * 7);
+                    else currTile = source + (i * 7);
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                    else if (isDest) return true;
+                }
+            }
+
+            case 9, 18, 27, 36, 45, 54, 53 -> {
+                for(int i = 1; i <= diff / 9; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - (i * 9);
+                    else currTile = source + (i * 9);
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                    else if (isDest) return true;
+                }
+            }
+
+            default -> {
+                return false;
             }
         }
         return false;
