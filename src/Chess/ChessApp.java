@@ -47,11 +47,11 @@ public class ChessApp extends JFrame {
 
         //panels and containers
         boardPanel = createBoardPanel();
-//        menuBar = new JMenuBar();
+        menuBar = createMenuBar();
 
         //Add panels to contentPane
         contentPane.add(boardPanel, BorderLayout.CENTER);
-//        contentPane.add(menuBar, BorderLayout.NORTH);
+        contentPane.add(menuBar, BorderLayout.NORTH);
 
         setContentPane(contentPane);
     }
@@ -127,5 +127,27 @@ public class ChessApp extends JFrame {
         game.board.selectedPieceTile = t;
         tButtonsST.get(game.board.selectedPieceTile).setBackground(Color.ORANGE);
         System.out.println("Player has selected a tile with a piece of their own color");
+    }
+
+    private JMenuBar createMenuBar() {
+        JMenuBar jMenuBar = new JMenuBar();
+        jMenuBar.setSize(this.getWidth(), 50);
+
+//        JPopupMenu gameOptions = new JPopupMenu("Game");
+        JMenuItem reset = new JMenuItem("Reset Game");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                game = new Game();
+//                tButtonsST = new ST<>();
+//                boardPanel = createBoardPanel();
+//                boardPanel.revalidate();
+//                boardPanel.repaint();
+            }
+        });
+//        gameOptions.add(reset);
+        jMenuBar.add(reset);
+
+        return jMenuBar;
     }
 }
