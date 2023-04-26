@@ -49,6 +49,7 @@ public class TileBFPsManager {
     }
 
     private boolean pawnPathTo(int source, int dest) {
+        //TODO: en passant, Pawn Promotion
         // 1d array math method
         int diff = dest - source;
         if (grid[source].getPiece().getColor())
@@ -80,7 +81,7 @@ public class TileBFPsManager {
     }
 
     private boolean kingPathTo(int source, int dest) {
-        return false; // TODO: NO
+        return false; // TODO: Castling, Check rules, CheckMate rules
     }
 
 //    private boolean queenPathTo(int source, int dest) {

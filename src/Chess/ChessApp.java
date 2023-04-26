@@ -49,6 +49,7 @@ public class ChessApp extends JFrame {
         boardPanel = createBoardPanel();
         menuBar = createMenuBar();
 
+        //TODO: get rid of small white border around the chess board
         //Add panels to contentPane
         contentPane.add(boardPanel, BorderLayout.CENTER);
         contentPane.add(menuBar, BorderLayout.NORTH);
@@ -130,6 +131,7 @@ public class ChessApp extends JFrame {
     }
 
     private JMenuBar createMenuBar() {
+        // TODO: add DropDown menu, with reset button, exit game button.
         JMenuBar jMenuBar = new JMenuBar();
         jMenuBar.setSize(this.getWidth(), 50);
 
