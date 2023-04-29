@@ -1,5 +1,7 @@
 package Chess;
 
+import Chess.Pieces.Rank;
+
 public class Game {
     public Board board;
     public Player white;
@@ -7,9 +9,12 @@ public class Game {
 
     public boolean isWhitesTurn = true;
     public TileBFPsManager bfpsManager;
+    public Tile blackKingTile;
+    public Tile whiteKingTile;
 
     //TODO integrate TileBFPsManager into game rather than using it directly
     public Game() {
+
         board = new Board();
         white = new Player(true);
         black = new Player(false);
@@ -17,6 +22,20 @@ public class Game {
     }
 
     public boolean isValidMovement(Tile source, Tile dest) {
+        for(int i = 0; i < board.grid2d.length; i++) {
+            for(int j = 0; j < board.grid2d[i].length; j++) {
+                if(board.grid2d[i][j].hasPiece())
+                    if(board.grid2d[i][j].getPiece().rank == Rank.KING)
+                        if(board.grid2d[i][j].getPiece().getColor()) whiteKingTile = board.grid2d[i][j];
+                        else blackKingTile = board.grid2d[i][j];
+            }
+        }
+
+        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, blackKingTile)))
+            System.out.println("black is in check");
+        if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, whiteKingTile)))
+            System.out.println("white is in check");
+
         return bfpsManager.pieceHasPathTo(source, dest);
     }
 

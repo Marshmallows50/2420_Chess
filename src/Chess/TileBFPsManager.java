@@ -39,10 +39,10 @@ public class TileBFPsManager {
         boolean tiles = false;
         switch (source.getPiece().rank) {
             case PAWN -> tiles = pawnPathTo(s,v);
-//            case QUEEN -> tiles = queenPathTo(s,v);
+            case QUEEN -> tiles = queenPathTo(s,v);
             case KING -> tiles = kingPathTo(s,v);
-//            case ROOK -> tiles = rookPathTo(s,v);
-//            case BISHOP -> tiles = bishopPathTo(s,v);
+            case ROOK -> tiles = rookPathTo(s,v);
+            case BISHOP -> tiles = bishopPathTo(s,v);
             case KNIGHT -> tiles = knightPathTo(s,v);
         }
         return tiles;
@@ -81,37 +81,115 @@ public class TileBFPsManager {
     }
 
     private boolean kingPathTo(int source, int dest) {
-        return false; // TODO: Castling, Check rules, CheckMate rules
+        int diff = 0;
+        if(source > dest) diff = source - dest;
+        else diff = dest - source;
+
+        switch(Math.abs(diff)) {
+            case 7, 8, 9, 1 -> {
+                if(grid[dest].hasPiece()) {
+                    return grid[source].getPiece().getColor() != grid[dest].getPiece().getColor();
+                } else return true;
+            }
+        }
+        return false;
     }
 
-//    private boolean queenPathTo(int source, int dest) {
-//        Stack<Integer> thing = (Stack<Integer>) rookPathTo(source, dest);
-//        if(thing == null)
-//            return bishopPathTo(source, dest);
-//        else
-//            return thing;
-//    }
+    private boolean queenPathTo(int source, int dest) {
+        return (rookPathTo(source, dest) || bishopPathTo(source, dest));
+    }
 
-//    private boolean rookPathTo(int source, int dest) {
-//        BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
-//        // first vertex accessed is the source, last vertex is the destination.
-//        Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
-//        // determine if dest is in a straight line
-//        if(tsg.tileOf(source).getName().substring(0,1).equals(tsg.tileOf(dest).getName().substring(0,1)))
-//            return thing;
-//        else if(tsg.tileOf(source).getName().substring(1).equals(tsg.tileOf(dest).getName().substring(1)))
-//            return thing;
-//
-//        return false;
-//    }
+    private boolean rookPathTo(int source, int dest) {
+        int diff = 0;
+        if(source > dest) diff = source - dest;
+        else diff = dest - source;
 
-//    private boolean bishopPathTo(int source, int dest) {
-//        BreadthFirstPaths BFP = new BreadthFirstPaths(tsg.graph(), source);
-//        Stack<Integer> thing = (Stack<Integer>) BFP.pathTo(dest);
-//        if(tsg.tileOf(source).getColor().equals(tsg.tileOf(dest).getColor()))
-//            return thing;
-//        return false;
-//    }
+        switch (Math.abs(diff)) {
+            // vertical movement and checking for clear path
+            case 8, 16, 24, 32, 40, 48, 56, 64 -> {
+                for(int i = 1; i <= diff / 8; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - (i * 8);
+                    else currTile = source + (i * 8);
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                }
+            }
+            // horizontal movement and checking for clear path
+            case 1, 2, 3, 4, 5, 6, 7 -> {
+                for(int i = 1; i <= diff; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - i;
+                    else currTile = source + i;
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                }
+            }
+            default -> {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean bishopPathTo(int source, int dest) {
+        int diff = 0;
+        if(source > dest) diff = source - dest;
+        else diff = dest - source;
+        System.out.println("diff: " + diff);
+        // diagonal top right = 9 * rows
+        // diagonal top left = 7 * rows
+        // diagonal bottom right = -9 * rows
+        // diagonal bottom left = -7 * rows
+        switch (Math.abs(diff)) {
+            case 7, 14, 21, 28, 25, 42, 49 -> {
+                for(int i = 1; i <= diff / 7; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - (i * 7);
+                    else currTile = source + (i * 7);
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                    else if (isDest) return true;
+                }
+            }
+
+            case 9, 18, 27, 36, 45, 54, 53 -> {
+                for(int i = 1; i <= diff / 9; i++) {
+                    int currTile = 0;
+                    if(source > dest) currTile = source - (i * 9);
+                    else currTile = source + (i * 9);
+                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean isDest = (currTile == dest);
+                    boolean sameColor = false;
+                    if(pieceInPath && isDest) {
+                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        return sameColor;
+                    } else if(pieceInPath) return false;
+                    else if (isDest) return true;
+                }
+            }
+
+            default -> {
+                return false;
+            }
+        }
+        return false;
+    }
 
     private boolean knightPathTo(int source, int dest) {
         // 1d array math method
@@ -120,8 +198,8 @@ public class TileBFPsManager {
         // top lefts = +16-1, +8-2
         //bottom rights, = -16+1, -8+2
         //bottom lefts = -16-1, -8-2
-        switch (diff) {
-            case 17, 10, 15, 6, -15, -6, -17, -10 -> {
+        switch (Math.abs(diff)) {
+            case 17, 10, 15, 6 -> {
                 if (grid[source + diff].hasPiece())
                     return grid[source].getPiece().getColor() != grid[source + diff].getPiece().getColor();
                 else return true;
