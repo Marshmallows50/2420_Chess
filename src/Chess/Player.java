@@ -9,6 +9,8 @@ public class Player {
     public ArrayList<Piece> dead = new ArrayList<>();
     private long remainingTime;
 
+    public boolean isInCheck;
+
     public Piece king;
 
 

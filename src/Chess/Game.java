@@ -10,8 +10,6 @@ public class Game {
 
     public boolean isWhitesTurn = true;
     public TileBFPsManager bfpsManager;
-    public Tile blackKingTile;
-    public Tile whiteKingTile;
 
     //TODO integrate TileBFPsManager into game rather than using it directly
     public Game() {
@@ -24,21 +22,19 @@ public class Game {
     }
 
     public boolean isValidMovement(Tile source, Tile dest) {
-//        for(int i = 0; i < board.grid2d.length; i++) {
-//            for(int j = 0; j < board.grid2d[i].length; j++) {
-//                if(board.grid2d[i][j].hasPiece())
-//                    if(board.grid2d[i][j].getPiece().rank == Rank.KING)
-//                        if(board.grid2d[i][j].getPiece().getColor()) whiteKingTile = board.grid2d[i][j];
-//                        else blackKingTile = board.grid2d[i][j];
-//            }
-//        }
-//
-//        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, blackKingTile)))
-//            System.out.println("black is in check");
-//        if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, whiteKingTile)))
-//            System.out.println("white is in check");
-
         return bfpsManager.pieceHasPathTo(source, dest);
+    }
+
+    /**
+     * Checks if A piece has a path to the opposite color king.
+     * Only call after Piece of opposite color moves.
+     * @param source
+     */
+    public void hasPathToOppositeKing(Tile source) {
+        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, black.king.cords)))
+            black.isInCheck = true;
+        else if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, white.king.cords)))
+            white.isInCheck = true;
     }
 
     public void kill(Piece p) {
