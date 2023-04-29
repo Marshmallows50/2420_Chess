@@ -101,6 +101,7 @@ public class ChessApp extends JFrame {
 
                         // moves piece to destination tile
                         selected.movePieceTo(t);
+//                        if (game.isValidMovement(t, ))
                         //update destination tile to reflect new piece
                         tButtonsST.get(t).setIcon(tButtonsST.get(selected).getIcon());
                         tButtonsST.get(selected).setIcon(null);

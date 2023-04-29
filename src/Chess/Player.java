@@ -9,9 +9,12 @@ public class Player {
     public ArrayList<Piece> dead = new ArrayList<>();
     private long remainingTime;
 
+    public Piece king;
 
-    public Player(boolean color) {
+
+    public Player(boolean color, Piece king) {
         this.color = color;
+        this.king = king;
     }
 
     public Boolean getColor() {

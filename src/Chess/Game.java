@@ -1,6 +1,7 @@
 package Chess;
 
 import Chess.Pieces.Rank;
+import edu.princeton.cs.algs4.BreadthFirstPaths;
 
 public class Game {
     public Board board;
@@ -16,25 +17,26 @@ public class Game {
     public Game() {
 
         board = new Board();
-        white = new Player(true);
-        black = new Player(false);
+        white = new Player(true, board.grid.tileOf(4).getPiece());
+        black = new Player(false, board.grid.tileOf(60).getPiece());
         bfpsManager = new TileBFPsManager(board.grid);
+
     }
 
     public boolean isValidMovement(Tile source, Tile dest) {
-        for(int i = 0; i < board.grid2d.length; i++) {
-            for(int j = 0; j < board.grid2d[i].length; j++) {
-                if(board.grid2d[i][j].hasPiece())
-                    if(board.grid2d[i][j].getPiece().rank == Rank.KING)
-                        if(board.grid2d[i][j].getPiece().getColor()) whiteKingTile = board.grid2d[i][j];
-                        else blackKingTile = board.grid2d[i][j];
-            }
-        }
-
-        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, blackKingTile)))
-            System.out.println("black is in check");
-        if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, whiteKingTile)))
-            System.out.println("white is in check");
+//        for(int i = 0; i < board.grid2d.length; i++) {
+//            for(int j = 0; j < board.grid2d[i].length; j++) {
+//                if(board.grid2d[i][j].hasPiece())
+//                    if(board.grid2d[i][j].getPiece().rank == Rank.KING)
+//                        if(board.grid2d[i][j].getPiece().getColor()) whiteKingTile = board.grid2d[i][j];
+//                        else blackKingTile = board.grid2d[i][j];
+//            }
+//        }
+//
+//        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, blackKingTile)))
+//            System.out.println("black is in check");
+//        if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, whiteKingTile)))
+//            System.out.println("white is in check");
 
         return bfpsManager.pieceHasPathTo(source, dest);
     }
