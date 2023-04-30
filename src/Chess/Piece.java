@@ -7,7 +7,7 @@ import java.awt.*;
 public class Piece {
 
     // Fields
-    private boolean color;
+    private final boolean color;
     public Rank rank;
     public Image image;
     public Tile cords;
@@ -18,6 +18,11 @@ public class Piece {
         hasMoved = false;
     }
 
+    /**
+     * Returns the Piece color as a boolean where true = white
+     * and false = black.
+     * @return true if Piece is white and false otherwise.
+     */
     public boolean getColor() {
         return color;
     }

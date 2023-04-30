@@ -13,7 +13,7 @@ public class Board {
     public Tile selectedPieceTile = null;
     public Tile[][] grid2d;
 
-    public Board() {
+    public Board() { //TODO combine with Game.java
         // create Graph
         grid = new TileSymbolGraph("src/Chess/Resources/tileConnections.txt", ",");
         gridGraph = grid.graph();
@@ -40,10 +40,10 @@ public class Board {
         allTiles[6].setPiece(new Knight(true));
         allTiles[7].setPiece(new Rook(true));
 
-        for (int i = 8; i < 16; i++)//TODO change so it's not magic number
+        for (int i = 8; i < 16; i++)//TODO change so it's not a 'magic number'
             allTiles[i].setPiece(new Pawn(true));
 
-        for (int i = 48; i < 56; i++)//TODO change so it's not magic number
+        for (int i = 48; i < 56; i++)//TODO change so it's not a 'magic number'
             allTiles[i].setPiece(new Pawn(false));
 
         allTiles[56].setPiece(new Rook(false));
@@ -54,18 +54,5 @@ public class Board {
         allTiles[61].setPiece(new Bishop(false));
         allTiles[62].setPiece(new Knight(false));
         allTiles[63].setPiece(new Rook(false));
-
-        for (int i = 0, j=0; i < allTiles.length; i++) {
-            System.out.print(i + " ");
-            if (j==7) {
-                System.out.println();
-                j=-1;
-            }
-            j++;
-        }
-    }
-
-    public boolean hasPathTo(Tile piece, Tile destination) {
-        return false; // TODO: Need to implement.
     }
 }

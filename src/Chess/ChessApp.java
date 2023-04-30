@@ -44,7 +44,6 @@ public class ChessApp extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(0, 0));
 
-
         //panels and containers
         boardPanel = createBoardPanel();
         menuBar = createMenuBar();
@@ -101,7 +100,7 @@ public class ChessApp extends JFrame {
 
                         // moves piece to destination tile
                         selected.movePieceTo(t);
-                        game.hasPathToOppositeKing(t);
+
                         //update destination tile to reflect new piece
                         tButtonsST.get(t).setIcon(tButtonsST.get(selected).getIcon());
                         tButtonsST.get(selected).setIcon(null);
@@ -134,21 +133,21 @@ public class ChessApp extends JFrame {
     private JMenuBar createMenuBar() {
         // TODO: add DropDown menu, with reset button, exit game button.
         JMenuBar jMenuBar = new JMenuBar();
-        jMenuBar.setSize(this.getWidth(), 50);
 
-//        JPopupMenu gameOptions = new JPopupMenu("Game");
-        JMenuItem reset = new JMenuItem("Reset Game");
+        //TODO make this a JMenuItem inside a DropDown menu.
+        JButton reset = new JButton("Reset Game");
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                game = new Game();
-//                tButtonsST = new ST<>();
-//                boardPanel = createBoardPanel();
-//                boardPanel.revalidate();
-//                boardPanel.repaint();
+                game = new Game();
+                tButtonsST = new ST<>();
+                contentPane.remove(boardPanel);
+                boardPanel = createBoardPanel();
+                contentPane.add(boardPanel, BorderLayout.CENTER);
+                boardPanel.revalidate();
+                boardPanel.repaint();
             }
         });
-//        gameOptions.add(reset);
         jMenuBar.add(reset);
 
         return jMenuBar;

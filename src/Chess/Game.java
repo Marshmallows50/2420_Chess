@@ -1,9 +1,5 @@
 package Chess;
 
-import Chess.Pieces.Queen;
-import Chess.Pieces.Rank;
-import edu.princeton.cs.algs4.BreadthFirstPaths;
-
 import java.util.ArrayList;
 
 public class Game {
@@ -12,11 +8,9 @@ public class Game {
     public Player black;
 
     public boolean isWhitesTurn = true;
-    public TileBFPsManager bfpsManager;
+    public MovementManager moveManager;
 
-    //TODO integrate TileBFPsManager into game rather than using it directly
     public Game() {
-
         board = new Board();
         white = new Player(true, board.grid.tileOf(4).getPiece());
         black = new Player(false, board.grid.tileOf(60).getPiece());
@@ -29,28 +23,43 @@ public class Game {
             }
         }
 
-
-        bfpsManager = new TileBFPsManager(board.grid);
-
+        moveManager = new MovementManager(board.grid);
     }
 
+    /**
+     * Determines whether the Piece on Tile <code>source</code> can
+     * move to Tile <code>dest</code>.
+     * @param source The Tile the Piece is on.
+     * @param dest The Tile the Piece wants to move to.
+     * @return true if movement is legal, and false otherwise.
+     */
     public boolean isValidMovement(Tile source, Tile dest) {
-        return bfpsManager.pieceHasPathTo(source, dest) && checkCheck(source, dest);
+        return moveManager.pieceHasPathTo(source, dest) && checkCheck(source, dest);
     }
 
 
     /**
-     * Checks if A piece has a path to the opposite color king.
-     * Only call after Piece of opposite color moves.
-     * @param source
+     * Determines if a player is in check by checking if the Piece on
+     * Tile <code>source</code> has a path to the king of the opposite
+     * color. If it does, sets the player.isInCheck boolean to true.
+     * <p/>
+     * This method should only be called after a Piece has moved that turn.
+     * @param source The Tile with the piece to check.
      */
-    public void hasPathToOppositeKing(Tile source) {
-        if(isWhitesTurn && (bfpsManager.pieceHasPathTo(source, black.king.cords)))
+    //NOTE: this is unused for now, will be used in future for visual indicator
+    public void determineIfInCheck(Tile source) {
+        if(isWhitesTurn && (moveManager.pieceHasPathTo(source, black.king.cords)))
             black.isInCheck = true;
-        else if(!isWhitesTurn && (bfpsManager.pieceHasPathTo(source, white.king.cords)))
+        else if(!isWhitesTurn && (moveManager.pieceHasPathTo(source, white.king.cords)))
             white.isInCheck = true;
     }
 
+    /**
+     * "Kills" Piece <code>p</code> by removing it from the player's
+     * (of the same color as <code>p</code>) alive list and adding it
+     * to their dead list.
+     * @param p The Piece to kill.
+     */
     public void kill(Piece p) {
         System.out.println(p.getColor() + " " + p.rank + " was captured");
         if (p.getColor()) {
@@ -63,74 +72,41 @@ public class Game {
         }
     }
 
-    public boolean checkCheck(Tile source, Tile dest) {
-        // Tile source is the piece that is moving, before it moves
-        Piece previous = new Piece(isWhitesTurn);
+    /**
+     * Determines whether the King will be in check after the Piece on
+     * Tile <code>source</code> moves to Tile <code>dest</code>.
+     * @param source The Tile the Piece is on.
+     * @param dest The Tile the Piece wants to move to.
+     * @return true if the piece is safe to move, and false otherwise
+     */
+    private boolean checkCheck(Tile source, Tile dest) { //TODO: this is slow and inefficient, fix.
+        //needed vars and objects
+        boolean canMove = true;
         boolean hadPiece = dest.hasPiece();
+        Piece previous = null;
+
+        // get the previous piece, if applicable
         if (hadPiece)
             previous = dest.getPiece();
-        if (bfpsManager.pieceHasPathTo(source,dest)) {
-            source.movePieceTo(dest);
-        } else
-            return false;
 
+        // temporarily move piece to dest to allow for testing paths
+        source.movePieceTo(dest); //note: we have already determined that source hasPathTo dest
+
+        // get the current player's king's tile and living opposing pieces
         Tile kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
         ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
 
-        int b;
-        int w;
-
+        //check if any opposing piece can reach the king. If yes, canMove = false.
         for (Piece p: opposingPieces) {
-            if (bfpsManager.pieceHasPathTo(p.cords, kingTile)) {
-                dest.movePieceTo(source);
-                if (hadPiece)
-                    dest.setPiece(previous);
-                b = board.grid.indexOf(black.king.cords);
-                w = board.grid.indexOf(white.king.cords);
-                System.out.println("black king tile: " + board.grid.nameOf(b));
-                System.out.println("white king tile: " + board.grid.nameOf(w));
-                return false;
-            }
+            if (moveManager.pieceHasPathTo(p.cords, kingTile))
+                canMove = false;
         }
+
+        //Undo changes made to board.
         dest.movePieceTo(source);
         if (hadPiece)
             dest.setPiece(previous);
-        b = board.grid.indexOf(black.king.cords);
-        w = board.grid.indexOf(white.king.cords);
-        System.out.println("black king tile: " + board.grid.nameOf(b));
-        System.out.println("white king tile: " + board.grid.nameOf(w));
 
-        return true;
-
-//        Tile kingTile;
-//        boolean isKing = source.getPiece().rank == Rank.KING;
-//
-//        if (isKing)
-//            kingTile = dest;
-//        else
-//            kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
-//
-//        ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
-//
-//        Piece tempSource = source.getPiece();
-//        Piece tempDest = source.getPiece();
-//        source.piece = null;
-//
-//        if (isKing)
-//            dest.piece = null;
-//
-//        for (Piece p: opposingPieces) {
-//            if (bfpsManager.pieceHasPathTo(p.cords, kingTile)) {
-//                source.setPiece(tempSource);
-//                dest.setPiece(tempDest);
-//                return false;
-//            }
-//        }
-//        source.setPiece(tempSource);
-//        dest.setPiece(tempDest);
-//        return true;
+        return canMove; //note: canMove is true by default.
     }
-
-
-
 }

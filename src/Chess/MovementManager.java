@@ -1,19 +1,22 @@
 package Chess;
 
-import edu.princeton.cs.algs4.BreadthFirstPaths;
-import edu.princeton.cs.algs4.Stack;
-
-import java.util.ArrayList;
-
-public class TileBFPsManager {
+public class MovementManager {
 
     public TileSymbolGraph tsg;
     public Tile[] grid;
-    public TileBFPsManager(TileSymbolGraph tsg) {
+    public MovementManager(TileSymbolGraph tsg) {
         this.tsg = tsg;
         this.grid = tsg.getKeys();
     }
 
+    /**
+     * Determines whether Piece at Tile <code>source</code> has a
+     * path to Tile <code>dest</code>, taking into account different
+     * pieces' movement patterns and obstacles.
+     * @param source The Tile the Piece is on.
+     * @param dest The Tile the Piece wants to move to.
+     * @return true if Piece has a path to dest, and false otherwise.
+     */
     public boolean pieceHasPathTo(Tile source, Tile dest) {
         int s = tsg.indexOf(source);
         int v = tsg.indexOf(dest);
@@ -31,7 +34,6 @@ public class TileBFPsManager {
 
     private boolean pawnPathTo(int source, int dest) {
         //TODO: en passant, Pawn Promotion
-        // 1d array math method
         int diff = dest - source;
         if (grid[source].getPiece().getColor())
             switch (diff) {
@@ -62,15 +64,16 @@ public class TileBFPsManager {
     }
 
     private boolean kingPathTo(int source, int dest) {
-        int diff = 0;
-        if(source > dest) diff = source - dest;
+        int diff;
+        if(source > dest)
+            diff = source - dest;
         else diff = dest - source;
 
         switch(Math.abs(diff)) {
             case 7, 8, 9, 1 -> {
-                if(grid[dest].hasPiece()) {
+                if(grid[dest].hasPiece())
                     return grid[source].getPiece().getColor() != grid[dest].getPiece().getColor();
-                } else return true;
+                else return true;
             }
         }
         return false;
@@ -81,7 +84,7 @@ public class TileBFPsManager {
     }
 
     private boolean rookPathTo(int source, int dest) {
-        int diff = 0;
+        int diff;
         if(source > dest) diff = source - dest;
         else diff = dest - source;
 
@@ -94,7 +97,7 @@ public class TileBFPsManager {
                     else currTile = source + (i * 8);
                     boolean pieceInPath = grid[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
-                    boolean sameColor = false;
+                    boolean sameColor;
                     if(pieceInPath && isDest) {
                         sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
                         return sameColor;
@@ -109,7 +112,7 @@ public class TileBFPsManager {
                     else currTile = source + i;
                     boolean pieceInPath = grid[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
-                    boolean sameColor = false;
+                    boolean sameColor;
                     if(pieceInPath && isDest) {
                         sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
                         return sameColor;
@@ -124,10 +127,9 @@ public class TileBFPsManager {
     }
 
     private boolean bishopPathTo(int source, int dest) {
-        int diff = 0;
+        int diff;
         if(source > dest) diff = source - dest;
         else diff = dest - source;
-//        System.out.println("diff: " + diff);
         // diagonal top right = 9 * rows
         // diagonal top left = 7 * rows
         // diagonal bottom right = -9 * rows
@@ -140,7 +142,7 @@ public class TileBFPsManager {
                     else currTile = source + (i * 7);
                     boolean pieceInPath = grid[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
-                    boolean sameColor = false;
+                    boolean sameColor;
                     if(pieceInPath && isDest) {
                         sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
                         return sameColor;
@@ -151,12 +153,12 @@ public class TileBFPsManager {
 
             case 9, 18, 27, 36, 45, 54, 53 -> {
                 for(int i = 1; i <= diff / 9; i++) {
-                    int currTile = 0;
+                    int currTile;
                     if(source > dest) currTile = source - (i * 9);
                     else currTile = source + (i * 9);
                     boolean pieceInPath = grid[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
-                    boolean sameColor = false;
+                    boolean sameColor;
                     if(pieceInPath && isDest) {
                         sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
                         return sameColor;
@@ -173,12 +175,11 @@ public class TileBFPsManager {
     }
 
     private boolean knightPathTo(int source, int dest) {
-        // 1d array math method
-        int diff = dest - source;
         // top rights, = +16+1, +8+2
         // top lefts = +16-1, +8-2
         //bottom rights, = -16+1, -8+2
         //bottom lefts = -16-1, -8-2
+        int diff = dest - source;
         switch (Math.abs(diff)) {
             case 17, 10, 15, 6 -> {
                 if (grid[source + diff].hasPiece())
@@ -188,6 +189,4 @@ public class TileBFPsManager {
         }
         return false;
     }
-
-
 }
