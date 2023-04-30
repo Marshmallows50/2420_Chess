@@ -54,6 +54,15 @@ public class Board {
         allTiles[61].setPiece(new Bishop(false));
         allTiles[62].setPiece(new Knight(false));
         allTiles[63].setPiece(new Rook(false));
+
+        for (int i = 0, j=0; i < allTiles.length; i++) {
+            System.out.print(i + " ");
+            if (j==7) {
+                System.out.println();
+                j=-1;
+            }
+            j++;
+        }
     }
 
     public boolean hasPathTo(Tile piece, Tile destination) {

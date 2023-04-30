@@ -1,7 +1,10 @@
 package Chess;
 
+import Chess.Pieces.Queen;
 import Chess.Pieces.Rank;
 import edu.princeton.cs.algs4.BreadthFirstPaths;
+
+import java.util.ArrayList;
 
 public class Game {
     public Board board;
@@ -17,13 +20,24 @@ public class Game {
         board = new Board();
         white = new Player(true, board.grid.tileOf(4).getPiece());
         black = new Player(false, board.grid.tileOf(60).getPiece());
+        for (Tile t:board.grid.getKeys()) {
+            if (t.hasPiece()){
+                if (t.getPiece().getColor())
+                    white.alive.add(t.getPiece());
+                else
+                    black.alive.add(t.getPiece());
+            }
+        }
+
+
         bfpsManager = new TileBFPsManager(board.grid);
 
     }
 
     public boolean isValidMovement(Tile source, Tile dest) {
-        return bfpsManager.pieceHasPathTo(source, dest);
+        return bfpsManager.pieceHasPathTo(source, dest) && checkCheck(source, dest);
     }
+
 
     /**
      * Checks if A piece has a path to the opposite color king.
@@ -39,14 +53,45 @@ public class Game {
 
     public void kill(Piece p) {
         System.out.println(p.getColor() + " " + p.rank + " was captured");
-        if (p.getColor())
+        if (p.getColor()) {
+            white.alive.remove(p);
             white.dead.add(p);
-        else
+        }
+        else {
+            black.alive.remove(p);
             black.dead.add(p);
+        }
     }
 
-    public void checkCheck() {
-        //TODO implement
+    public boolean checkCheck(Tile source, Tile dest) {
+        // Tile source is the piece that is moving, before it moves
+        Tile kingTile;
+        boolean isKing = source.getPiece().rank == Rank.KING;
+
+        if (isKing)
+            kingTile = dest;
+        else
+            kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
+
+        ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
+
+        Piece tempSource = source.getPiece();
+        Piece tempDest = source.getPiece();
+        source.piece = null;
+
+        if (isKing)
+            dest.piece = null;
+
+        for (Piece p: opposingPieces) {
+            if (bfpsManager.pieceHasPathTo(p.cords, kingTile)) {
+                source.setPiece(tempSource);
+                dest.setPiece(tempDest);
+                return false;
+            }
+        }
+        source.setPiece(tempSource);
+        dest.setPiece(tempDest);
+        return true;
     }
 
 

@@ -5,7 +5,7 @@ import java.awt.*;
 public class Tile implements Comparable<Tile> {
 
     private String name;
-    private Piece piece;
+    public Piece piece;
     private Color color;
 
     private int x;
@@ -42,9 +42,13 @@ public class Tile implements Comparable<Tile> {
         return piece;
     }
 
-    public void setPiece(Piece Piece) {
-        this.piece = Piece;
-        piece.cords = this;
+    public void setPiece(Piece piece) {
+        if (piece == null){
+            this.piece= null;
+            return;
+        }
+        this.piece = piece;
+        this.piece.cords = this;
     }
 
     public Color getColor() {
