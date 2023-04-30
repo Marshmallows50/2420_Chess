@@ -64,17 +64,10 @@ public class MovementManager {
     }
 
     private boolean kingPathTo(int source, int dest) {
-        int diff;
-        if(source > dest)
-            diff = source - dest;
-        else diff = dest - source;
-
-        switch(Math.abs(diff)) {
-            case 7, 8, 9, 1 -> {
-                if(keys[dest].hasPiece())
-                    return keys[source].getPiece().getColor() != keys[dest].getPiece().getColor();
-                else return true;
-            }
+        for (int i:grid.graph().adj(source)) {
+            if (i == dest && keys[i].hasPiece())
+                return keys[source].getPiece().getColor() != keys[dest].getPiece().getColor();
+            else if (i == dest) return true;
         }
         return false;
     }
