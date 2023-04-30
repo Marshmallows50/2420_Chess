@@ -96,7 +96,7 @@ public class Game {
         Tile kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
         ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
 
-        //check if any opposing piece can reach the king. If yes, canMove = false.
+        //check if any opposing piece can reach the king. if yes, canMove = false.
         for (Piece p: opposingPieces) {
             if (moveManager.pieceHasPathTo(p.cords, kingTile))
                 canMove = false;

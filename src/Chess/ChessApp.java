@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class ChessApp extends JFrame {
 
     public Game game;
-    private JPanel contentPane;
+    private final JPanel contentPane;
     private JPanel boardPanel;
     private JMenuBar menuBar;
     private ST<Tile, JButton> tButtonsST;
@@ -105,6 +105,7 @@ public class ChessApp extends JFrame {
                         tButtonsST.get(t).setIcon(tButtonsST.get(selected).getIcon());
                         tButtonsST.get(selected).setIcon(null);
                         tButtonsST.get(selected).setBackground(selected.getColor());
+
                         //set selected piece back to null
                         game.board.selectedPieceTile = null;
                         game.isWhitesTurn = !game.isWhitesTurn;

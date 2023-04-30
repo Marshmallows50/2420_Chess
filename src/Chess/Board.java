@@ -2,10 +2,6 @@ package Chess;
 
 import Chess.Pieces.*;
 import edu.princeton.cs.algs4.Graph;
-import edu.princeton.cs.algs4.Quick;
-import edu.princeton.cs.algs4.Stack;
-
-import java.util.ArrayList;
 
 public class Board {
     public TileSymbolGraph grid;
@@ -21,7 +17,7 @@ public class Board {
 
         //Add Tiles to 2d grid
         Tile[] allTiles = grid.getKeys();
-        for (int i = 0, j= 0, k=0;k < 64; j++, k++) {
+        for (int i = 0, j= 0, k=0;k < gridGraph.V(); j++, k++) {
             grid2d[i][j] = allTiles[k];
             if (j == 7) {
                 i++;

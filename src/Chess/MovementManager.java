@@ -2,11 +2,11 @@ package Chess;
 
 public class MovementManager {
 
-    public TileSymbolGraph tsg;
-    public Tile[] grid;
-    public MovementManager(TileSymbolGraph tsg) {
-        this.tsg = tsg;
-        this.grid = tsg.getKeys();
+    public TileSymbolGraph grid;
+    public Tile[] keys;
+    public MovementManager(TileSymbolGraph grid) {
+        this.grid = grid;
+        this.keys = grid.getKeys();
     }
 
     /**
@@ -18,8 +18,8 @@ public class MovementManager {
      * @return true if Piece has a path to dest, and false otherwise.
      */
     public boolean pieceHasPathTo(Tile source, Tile dest) {
-        int s = tsg.indexOf(source);
-        int v = tsg.indexOf(dest);
+        int s = grid.indexOf(source);
+        int v = grid.indexOf(dest);
         boolean tiles = false;
         switch (source.getPiece().rank) {
             case PAWN -> tiles = pawnPathTo(s,v);
@@ -33,30 +33,30 @@ public class MovementManager {
     }
 
     private boolean pawnPathTo(int source, int dest) {
-        //TODO: en passant, Pawn Promotion
+        //TODO: Refactoring, en passant, Pawn Promotion
         int diff = dest - source;
-        if (grid[source].getPiece().getColor())
+        if (keys[source].getPiece().getColor())
             switch (diff) {
                 case 8 -> {
-                    return !grid[source + diff].hasPiece();
+                    return !keys[source + diff].hasPiece();
                 }
                 case 7, 9 -> {
-                    return grid[source + diff].hasPiece() && !grid[source + diff].getPiece().getColor();
+                    return keys[source + diff].hasPiece() && !keys[source + diff].getPiece().getColor();
                 }
                 case 16 -> {
-                    return !grid[source + diff].hasPiece() && !tsg.tileOf(source).getPiece().hasMoved;
+                    return !keys[source + diff].hasPiece() && !grid.tileOf(source).getPiece().hasMoved;
                 }
             }
         else {
             switch (diff) {
                 case -8 -> {
-                    return !grid[source + diff].hasPiece();
+                    return !keys[source + diff].hasPiece();
                 }
                 case -7, -9 -> {
-                    return grid[source + diff].hasPiece() && grid[source + diff].getPiece().getColor();
+                    return keys[source + diff].hasPiece() && keys[source + diff].getPiece().getColor();
                 }
                 case -16 -> {
-                    return !grid[source + diff].hasPiece() && !tsg.tileOf(source).getPiece().hasMoved;
+                    return !keys[source + diff].hasPiece() && !grid.tileOf(source).getPiece().hasMoved;
                 }
             }
         }
@@ -71,8 +71,8 @@ public class MovementManager {
 
         switch(Math.abs(diff)) {
             case 7, 8, 9, 1 -> {
-                if(grid[dest].hasPiece())
-                    return grid[source].getPiece().getColor() != grid[dest].getPiece().getColor();
+                if(keys[dest].hasPiece())
+                    return keys[source].getPiece().getColor() != keys[dest].getPiece().getColor();
                 else return true;
             }
         }
@@ -92,14 +92,14 @@ public class MovementManager {
             // vertical movement and checking for clear path
             case 8, 16, 24, 32, 40, 48, 56, 64 -> {
                 for(int i = 1; i <= diff / 8; i++) {
-                    int currTile = 0;
+                    int currTile;
                     if(source > dest) currTile = source - (i * 8);
                     else currTile = source + (i * 8);
-                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean pieceInPath = keys[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
                     boolean sameColor;
                     if(pieceInPath && isDest) {
-                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        sameColor = keys[source].getPiece().getColor() != keys[currTile].getPiece().getColor();
                         return sameColor;
                     } else if(pieceInPath) return false;
                 }
@@ -107,14 +107,14 @@ public class MovementManager {
             // horizontal movement and checking for clear path
             case 1, 2, 3, 4, 5, 6, 7 -> {
                 for(int i = 1; i <= diff; i++) {
-                    int currTile = 0;
+                    int currTile;
                     if(source > dest) currTile = source - i;
                     else currTile = source + i;
-                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean pieceInPath = keys[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
                     boolean sameColor;
                     if(pieceInPath && isDest) {
-                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        sameColor = keys[source].getPiece().getColor() != keys[currTile].getPiece().getColor();
                         return sameColor;
                     } else if(pieceInPath) return false;
                 }
@@ -137,14 +137,14 @@ public class MovementManager {
         switch (Math.abs(diff)) {
             case 7, 14, 21, 28, 35, 42, 49 -> {
                 for(int i = 1; i <= diff / 7; i++) {
-                    int currTile = 0;
+                    int currTile;
                     if(source > dest) currTile = source - (i * 7);
                     else currTile = source + (i * 7);
-                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean pieceInPath = keys[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
                     boolean sameColor;
                     if(pieceInPath && isDest) {
-                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        sameColor = keys[source].getPiece().getColor() != keys[currTile].getPiece().getColor();
                         return sameColor;
                     } else if(pieceInPath) return false;
                     else if (isDest) return true;
@@ -156,11 +156,11 @@ public class MovementManager {
                     int currTile;
                     if(source > dest) currTile = source - (i * 9);
                     else currTile = source + (i * 9);
-                    boolean pieceInPath = grid[currTile].hasPiece();
+                    boolean pieceInPath = keys[currTile].hasPiece();
                     boolean isDest = (currTile == dest);
                     boolean sameColor;
                     if(pieceInPath && isDest) {
-                        sameColor = grid[source].getPiece().getColor() != grid[currTile].getPiece().getColor();
+                        sameColor = keys[source].getPiece().getColor() != keys[currTile].getPiece().getColor();
                         return sameColor;
                     } else if(pieceInPath) return false;
                     else if (isDest) return true;
@@ -182,8 +182,8 @@ public class MovementManager {
         int diff = dest - source;
         switch (Math.abs(diff)) {
             case 17, 10, 15, 6 -> {
-                if (grid[source + diff].hasPiece())
-                    return grid[source].getPiece().getColor() != grid[source + diff].getPiece().getColor();
+                if (keys[source + diff].hasPiece())
+                    return keys[source].getPiece().getColor() != keys[source + diff].getPiece().getColor();
                 else return true;
             }
         }

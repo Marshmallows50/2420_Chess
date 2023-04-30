@@ -43,8 +43,8 @@ public class TileSymbolGraph {
      * @param delimiter the delimiter between fields
      */
     public TileSymbolGraph(String filename, String delimiter) {
-        st = new ST<Tile, Integer>();
-        nameST = new ST<String, Tile>();
+        st = new ST<>();
+        nameST = new ST<>();
 
         // First pass builds the index by reading strings to associate
         // distinct strings with a Tile. Also creates tile objects to associate
@@ -60,20 +60,12 @@ public class TileSymbolGraph {
                 }
             }
         }
-//        while (!in.isEmpty()) {
-//            String[] a = in.readLine().split(delimiter);
-//            for (int i = 0; i < a.length; i++) {
-//                if (!st.contains(a[i]))
-//                    st.put(a[i], st.size());
-//            }
-//        }
 
         // inverted index to get string keys in an array
         keys = new Tile[st.size()];
         for (Tile tile : st.keys()) {
             keys[st.get(tile)] = tile;
         }
-
 
         // second pass builds the graph by connecting first vertex on each
         // line to all others
@@ -89,7 +81,6 @@ public class TileSymbolGraph {
                     graph.addEdge(v, w);
                 }
                 catch (IllegalArgumentException ignored){}
-
             }
         }
     }

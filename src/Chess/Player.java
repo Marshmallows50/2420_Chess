@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private Boolean color;
+    private final boolean color;
     public ArrayList<Piece> alive = new ArrayList<>(16);
     public ArrayList<Piece> dead = new ArrayList<>();
     public boolean isInCheck;
