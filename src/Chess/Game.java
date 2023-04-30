@@ -65,33 +65,70 @@ public class Game {
 
     public boolean checkCheck(Tile source, Tile dest) {
         // Tile source is the piece that is moving, before it moves
-        Tile kingTile;
-        boolean isKing = source.getPiece().rank == Rank.KING;
+        Piece previous = new Piece(isWhitesTurn);
+        boolean hadPiece = dest.hasPiece();
+        if (hadPiece)
+            previous = dest.getPiece();
+        if (bfpsManager.pieceHasPathTo(source,dest)) {
+            source.movePieceTo(dest);
+        } else
+            return false;
 
-        if (isKing)
-            kingTile = dest;
-        else
-            kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
-
+        Tile kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
         ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
 
-        Piece tempSource = source.getPiece();
-        Piece tempDest = source.getPiece();
-        source.piece = null;
-
-        if (isKing)
-            dest.piece = null;
+        int b;
+        int w;
 
         for (Piece p: opposingPieces) {
             if (bfpsManager.pieceHasPathTo(p.cords, kingTile)) {
-                source.setPiece(tempSource);
-                dest.setPiece(tempDest);
+                dest.movePieceTo(source);
+                if (hadPiece)
+                    dest.setPiece(previous);
+                b = board.grid.indexOf(black.king.cords);
+                w = board.grid.indexOf(white.king.cords);
+                System.out.println("black king tile: " + board.grid.nameOf(b));
+                System.out.println("white king tile: " + board.grid.nameOf(w));
                 return false;
             }
         }
-        source.setPiece(tempSource);
-        dest.setPiece(tempDest);
+        dest.movePieceTo(source);
+        if (hadPiece)
+            dest.setPiece(previous);
+        b = board.grid.indexOf(black.king.cords);
+        w = board.grid.indexOf(white.king.cords);
+        System.out.println("black king tile: " + board.grid.nameOf(b));
+        System.out.println("white king tile: " + board.grid.nameOf(w));
+
         return true;
+
+//        Tile kingTile;
+//        boolean isKing = source.getPiece().rank == Rank.KING;
+//
+//        if (isKing)
+//            kingTile = dest;
+//        else
+//            kingTile = isWhitesTurn ? white.king.cords : black.king.cords;
+//
+//        ArrayList<Piece> opposingPieces = isWhitesTurn ? black.alive : white.alive;
+//
+//        Piece tempSource = source.getPiece();
+//        Piece tempDest = source.getPiece();
+//        source.piece = null;
+//
+//        if (isKing)
+//            dest.piece = null;
+//
+//        for (Piece p: opposingPieces) {
+//            if (bfpsManager.pieceHasPathTo(p.cords, kingTile)) {
+//                source.setPiece(tempSource);
+//                dest.setPiece(tempDest);
+//                return false;
+//            }
+//        }
+//        source.setPiece(tempSource);
+//        dest.setPiece(tempDest);
+//        return true;
     }
 
 

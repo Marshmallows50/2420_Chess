@@ -14,25 +14,6 @@ public class TileBFPsManager {
         this.grid = tsg.getKeys();
     }
 
-//    public boolean pieceHasPathTo(Tile source, Tile dest) {
-//        Stack<Integer> path = null;
-//        if(path == null)
-//            return false;
-//
-//        while (!path.isEmpty()) {
-//            Tile tile = tsg.tileOf(path.pop());
-////            System.out.println("tile: " + tile);
-//            if(!tile.getName().equals(source.getName()) && !tile.getName().equals(dest.getName())) {
-//                if (tile.hasPiece())
-//                    return false;
-//            }
-//            else if (tile.hasPiece() && (tile.getPiece().getColor() != source.getPiece().getColor())) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
     public boolean pieceHasPathTo(Tile source, Tile dest) {
         int s = tsg.indexOf(source);
         int v = tsg.indexOf(dest);
@@ -146,13 +127,13 @@ public class TileBFPsManager {
         int diff = 0;
         if(source > dest) diff = source - dest;
         else diff = dest - source;
-        System.out.println("diff: " + diff);
+//        System.out.println("diff: " + diff);
         // diagonal top right = 9 * rows
         // diagonal top left = 7 * rows
         // diagonal bottom right = -9 * rows
         // diagonal bottom left = -7 * rows
         switch (Math.abs(diff)) {
-            case 7, 14, 21, 28, 25, 42, 49 -> {
+            case 7, 14, 21, 28, 35, 42, 49 -> {
                 for(int i = 1; i <= diff / 7; i++) {
                     int currTile = 0;
                     if(source > dest) currTile = source - (i * 7);
