@@ -33,31 +33,20 @@ public class MovementManager {
     }
 
     private boolean pawnPathTo(int source, int dest) {
-        //TODO: Refactoring, en passant, Pawn Promotion
+        //TODO: en passant, Pawn Promotion
         int diff = dest - source;
-        if (keys[source].getPiece().getColor())
-            switch (diff) {
-                case 8 -> {
-                    return !keys[source + diff].hasPiece();
-                }
-                case 7, 9 -> {
-                    return keys[source + diff].hasPiece() && !keys[source + diff].getPiece().getColor();
-                }
-                case 16 -> {
-                    return !keys[source + diff].hasPiece() && !grid.tileOf(source).getPiece().hasMoved;
-                }
+        switch (Math.abs(diff)) {
+            case 8 -> {
+                boolean color = keys[source].getPiece().getColor() ? diff>0 : diff<0;
+                return !keys[source + (diff)].hasPiece() && color;
             }
-        else {
-            switch (diff) {
-                case -8 -> {
-                    return !keys[source + diff].hasPiece();
-                }
-                case -7, -9 -> {
-                    return keys[source + diff].hasPiece() && keys[source + diff].getPiece().getColor();
-                }
-                case -16 -> {
-                    return !keys[source + diff].hasPiece() && !grid.tileOf(source).getPiece().hasMoved;
-                }
+            case 7, 9 -> {
+                boolean color = (diff > 0) == keys[source].getPiece().getColor();
+                return keys[source + diff].hasPiece() && color;
+            }
+            case 16 -> {
+                boolean color = keys[source].getPiece().getColor() ? diff>0 : diff<0;
+                return !keys[source + (diff)].hasPiece() && !grid.tileOf(source).getPiece().hasMoved && color;
             }
         }
         return false;
