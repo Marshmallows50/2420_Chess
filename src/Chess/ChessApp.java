@@ -36,7 +36,7 @@ public class ChessApp extends JFrame {
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Chess");
-        setIconImage(new ImageIcon("src/Chess/Resources/wPawn.png").getImage());
+        setIconImage(new ImageIcon("Chess/Resources/wPawn.png").getImage());
         setBounds(100, 100, 900, 900);
         setResizable(false);
 
@@ -69,10 +69,13 @@ public class ChessApp extends JFrame {
             button.setBorder(null);
             button.setSize(new Dimension((boardPanel.getWidth()/8),(boardPanel.getHeight()/8)));
 
+
             if (t.hasPiece())
                 button.setIcon(new ImageIcon(t.getPiece().image.getScaledInstance
                         (button.getWidth(), button.getHeight(), Image.SCALE_DEFAULT)));
             button.setBackground(t.getColor());
+
+
 
             button.addActionListener(new ActionListener() {
                 @Override

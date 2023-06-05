@@ -11,7 +11,7 @@ public class Board {
 
     public Board() { //TODO combine with Game.java
         // create Graph
-        grid = new TileSymbolGraph("src/Chess/Resources/tileConnections.txt", ",");
+        grid = new TileSymbolGraph("Chess/Resources/tileConnections.txt", ",");
         gridGraph = grid.graph();
         grid2d = new Tile[8][8];
 
